@@ -1,20 +1,16 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Standard Assets\Vehicles\Aircraft\Scripts\GunController.cs">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="assets\Scripts\NewPlaneController.cs">
     <Files>
-      <File FileName="Assets\HighScores.cs" Line="116" Column="5" />
-      <File FileName="Assets\Infinite Terrain\Scripts\TerrainGenerator.cs" Line="1" Column="1" />
-      <File FileName="Assets\ScoreController.cs" Line="1" Column="1" />
-      <File FileName="Assets\NewGameController.cs" Line="1" Column="1" />
-      <File FileName="Assets\Infinite Terrain\Scripts\TerrainControl.cs" Line="1" Column="1" />
-      <File FileName="Assets\Standard Assets\Vehicles\Aircraft\Scripts\AeroplaneAudio.cs" Line="1" Column="1" />
-      <File FileName="Assets\Standard Assets\Vehicles\Aircraft\Scripts\AeroplaneController.cs" Line="1" Column="1" />
-      <File FileName="Assets\Standard Assets\Vehicles\Aircraft\Scripts\AeroplaneControlSurfaceAnimator.cs" Line="1" Column="1" />
-      <File FileName="Assets\Standard Assets\Vehicles\Aircraft\Scripts\LandingGear.cs" Line="1" Column="1" />
-      <File FileName="Assets\Standard Assets\Vehicles\Aircraft\Scripts\AeroplaneUserControl2Axis.cs" Line="1" Column="1" />
-      <File FileName="Assets\Standard Assets\Vehicles\Aircraft\Scripts\InputController.cs" Line="1" Column="1" />
-      <File FileName="Assets\Standard Assets\Vehicles\Aircraft\Scripts\GunController.cs" Line="9" Column="17" />
-      <File FileName="Assets\Standard Assets\Vehicles\Aircraft\Scripts\BulletMove.cs" Line="4" Column="24" />
+      <File FileName="assets\Scripts\NewGameController.cs" Line="22" Column="95" />
+      <File FileName="assets\Scripts\HighScores.cs" Line="1" Column="1" />
+      <File FileName="assets\Scripts\ScoreController.cs" Line="79" Column="90" />
+      <File FileName="assets\Scripts\GunController.cs" Line="1" Column="1" />
+      <File FileName="assets\Radar\RadarScript.cs" Line="73" Column="34" />
+      <File FileName="assets\standard assets\vehicles\aircraft\Scripts\JetParticleEffect.cs" Line="1" Column="1" />
+      <File FileName="assets\Scripts\DamageReceiver.cs" Line="28" Column="38" />
+      <File FileName="assets\Scripts\AttachSelfToRadar.cs" Line="1" Column="1" />
+      <File FileName="assets\Scripts\NewPlaneController.cs" Line="22" Column="64" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

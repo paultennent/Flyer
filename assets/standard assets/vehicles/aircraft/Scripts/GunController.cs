@@ -3,19 +3,21 @@ using System.Collections;
 
 public class GunController : MonoBehaviour {
 
-	public GameObject projectile;
-	public float speed = 2000;
-	// Use this for initialization
-	void Start () {
-	}
+	Transform Effect;
+	int damage = 100;
 	
 	// Update is called once per frame
 	void Update () {
-		if (Input.GetKey("space"))
+
+		RaycastHit hit;
+		Ray ray = Camera.main.ScreenPointToRay (new Vector3 (Screen.width * 0.5f, Screen.height * 0.5f, 0f));
+
+		if (Input.GetMouseButtonDown(1))
 		{
-			Transform t = GameObject.Find("AircraftJet").transform;
-			Vector3 playerPosition = new Vector3(t.position.x,t.position.y,t.position.z);
-			Instantiate(projectile,playerPosition,t.rotation);
+			if(Physics.Raycast(ray, out hit, 1000)){
+				print (hit.transform.name);
+				hit.transform.SendMessage("ApplyDamage",damage, SendMessageOptions.DontRequireReceiver);
+			}
 		}
 	}
 }
