@@ -1,0 +1,24 @@
+﻿<Properties>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Standard Assets\Vehicles\Aircraft\Scripts\GunController.cs">
+    <Files>
+      <File FileName="Assets\HighScores.cs" Line="116" Column="5" />
+      <File FileName="Assets\Infinite Terrain\Scripts\TerrainGenerator.cs" Line="1" Column="1" />
+      <File FileName="Assets\ScoreController.cs" Line="1" Column="1" />
+      <File FileName="Assets\NewGameController.cs" Line="1" Column="1" />
+      <File FileName="Assets\Infinite Terrain\Scripts\TerrainControl.cs" Line="1" Column="1" />
+      <File FileName="Assets\Standard Assets\Vehicles\Aircraft\Scripts\AeroplaneAudio.cs" Line="1" Column="1" />
+      <File FileName="Assets\Standard Assets\Vehicles\Aircraft\Scripts\AeroplaneController.cs" Line="1" Column="1" />
+      <File FileName="Assets\Standard Assets\Vehicles\Aircraft\Scripts\AeroplaneControlSurfaceAnimator.cs" Line="1" Column="1" />
+      <File FileName="Assets\Standard Assets\Vehicles\Aircraft\Scripts\LandingGear.cs" Line="1" Column="1" />
+      <File FileName="Assets\Standard Assets\Vehicles\Aircraft\Scripts\AeroplaneUserControl2Axis.cs" Line="1" Column="1" />
+      <File FileName="Assets\Standard Assets\Vehicles\Aircraft\Scripts\InputController.cs" Line="1" Column="1" />
+      <File FileName="Assets\Standard Assets\Vehicles\Aircraft\Scripts\GunController.cs" Line="9" Column="17" />
+      <File FileName="Assets\Standard Assets\Vehicles\Aircraft\Scripts\BulletMove.cs" Line="4" Column="24" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+</Properties>
