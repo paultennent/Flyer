@@ -19,7 +19,7 @@
 	<DebugType>full</DebugType>
 	<Optimize>false</Optimize>
 	<OutputPath>Temp\bin\Debug\</OutputPath>
-	<DefineConstants>DEBUG;TRACE;UNITY_5_0_2;UNITY_5_0;UNITY_5;ENABLE_LICENSE_RENAME;ENABLE_NEW_BUGREPORTER;ENABLE_2D_PHYSICS;ENABLE_4_6_FEATURES;ENABLE_AUDIO;ENABLE_CACHING;ENABLE_CLOTH;ENABLE_DUCK_TYPING;ENABLE_FRAME_DEBUGGER;ENABLE_GENERICS;ENABLE_HOME_SCREEN;ENABLE_IMAGEEFFECTS;ENABLE_LIGHT_PROBES_LEGACY;ENABLE_MICROPHONE;ENABLE_MULTIPLE_DISPLAYS;ENABLE_NEW_HIERARCHY;ENABLE_PHYSICS;ENABLE_PHYSICS_PHYSX3;ENABLE_PLUGIN_INSPECTOR;ENABLE_SHADOWS;ENABLE_SINGLE_INSTANCE_BUILD_SETTING;ENABLE_SPRITES;ENABLE_TERRAIN;ENABLE_UNITYEVENTS;ENABLE_WEBCAM;ENABLE_WWW;ENABLE_AUDIOMIXER_SUSPEND;ENABLE_NONPRO;INCLUDE_DYNAMIC_GI;INCLUDE_GI;INCLUDE_IL2CPP;PLATFORM_SUPPORTS_MONO;RENDER_SOFTWARE_CURSOR;UNITY_WEBPLAYER;ENABLE_SUBSTANCE;WEBPLUG;ENABLE_TEXTUREID_MAP;ENABLE_RUNTIME_GI;ENABLE_MOVIES;ENABLE_NETWORK;ENABLE_MONO;ENABLE_PROFILER;UNITY_EDITOR;UNITY_EDITOR_64;UNITY_EDITOR_WIN;CROSS_PLATFORM_INPUT</DefineConstants>
+	<DefineConstants>DEBUG;TRACE;UNITY_5_1_0;UNITY_5_1;UNITY_5;ENABLE_NEW_BUGREPORTER;ENABLE_2D_PHYSICS;ENABLE_4_6_FEATURES;ENABLE_AUDIO;ENABLE_CACHING;ENABLE_CLOTH;ENABLE_DUCK_TYPING;ENABLE_FRAME_DEBUGGER;ENABLE_GENERICS;ENABLE_HOME_SCREEN;ENABLE_IMAGEEFFECTS;ENABLE_LIGHT_PROBES_LEGACY;ENABLE_MICROPHONE;ENABLE_MULTIPLE_DISPLAYS;ENABLE_PHYSICS;ENABLE_PHYSICS_PHYSX3;ENABLE_PLUGIN_INSPECTOR;ENABLE_SHADOWS;ENABLE_SINGLE_INSTANCE_BUILD_SETTING;ENABLE_SPRITES;ENABLE_TERRAIN;ENABLE_UNET;ENABLE_UNITYEVENTS;ENABLE_WEBCAM;ENABLE_WWW;ENABLE_CLOUD_SERVICES;ENABLE_CLOUD_SERVICES_ANALYTICS;ENABLE_CLOUD_SERVICES_UNET;ENABLE_CLOUD_LICENSE;ENABLE_AUDIOMIXER_SUSPEND;ENABLE_EDITOR_METRICS;INCLUDE_DYNAMIC_GI;INCLUDE_GI;INCLUDE_IL2CPP;INCLUDE_DIRECTX12;PLATFORM_SUPPORTS_MONO;RENDER_SOFTWARE_CURSOR;ENABLE_LOCALIZATION;UNITY_WEBPLAYER;ENABLE_SUBSTANCE;WEBPLUG;ENABLE_TEXTUREID_MAP;ENABLE_RUNTIME_GI;ENABLE_MOVIES;ENABLE_NETWORK;ENABLE_CRUNCH_TEXTURE_COMPRESSION;ENABLE_MONO;ENABLE_PROFILER;DEBUG;TRACE;UNITY_ASSERTIONS;UNITY_EDITOR;UNITY_EDITOR_64;UNITY_EDITOR_OSX;CROSS_PLATFORM_INPUT</DefineConstants>
 	<ErrorReport>prompt</ErrorReport>
 	<WarningLevel>4</WarningLevel>
 	<NoWarn>0169</NoWarn>
@@ -39,60 +39,66 @@
 	<Reference Include="System.Core" />
 	<Reference Include="System.Xml.Linq" />
 	<Reference Include="UnityEngine">
-	  <HintPath>C:/Program Files/Unity/Editor/Data/Managed/UnityEngine.dll</HintPath>
+	  <HintPath>/Applications/Unity/Unity.app/Contents/Frameworks/Managed/UnityEngine.dll</HintPath>
 	</Reference>
 	<Reference Include="UnityEditor">
-	  <HintPath>C:/Program Files/Unity/Editor/Data/Managed/UnityEditor.dll</HintPath>
+	  <HintPath>/Applications/Unity/Unity.app/Contents/Frameworks/Managed/UnityEditor.dll</HintPath>
 	</Reference>
   </ItemGroup>
   <ItemGroup>
-     <Compile Include="Assets\Standard Assets\CrossPlatformInput\Scripts\AxisTouchButton.cs" />
-     <Compile Include="Assets\Standard Assets\CrossPlatformInput\Scripts\ButtonHandler.cs" />
-     <Compile Include="Assets\Standard Assets\CrossPlatformInput\Scripts\CrossPlatformInputManager.cs" />
-     <Compile Include="Assets\Standard Assets\CrossPlatformInput\Scripts\InputAxisScrollbar.cs" />
-     <Compile Include="Assets\Standard Assets\CrossPlatformInput\Scripts\Joystick.cs" />
-     <Compile Include="Assets\Standard Assets\CrossPlatformInput\Scripts\MobileControlRig.cs" />
-     <Compile Include="Assets\Standard Assets\CrossPlatformInput\Scripts\PlatformSpecific\MobileInput.cs" />
-     <Compile Include="Assets\Standard Assets\CrossPlatformInput\Scripts\PlatformSpecific\StandaloneInput.cs" />
-     <Compile Include="Assets\Standard Assets\CrossPlatformInput\Scripts\TiltInput.cs" />
-     <Compile Include="Assets\Standard Assets\CrossPlatformInput\Scripts\TouchPad.cs" />
-     <Compile Include="Assets\Standard Assets\CrossPlatformInput\Scripts\VirtualInput.cs" />
-     <Compile Include="Assets\Standard Assets\Vehicles\Aircraft\Scripts\AeroplaneAiControl.cs" />
-     <Compile Include="Assets\Standard Assets\Vehicles\Aircraft\Scripts\AeroplaneAudio.cs" />
-     <Compile Include="Assets\Standard Assets\Vehicles\Aircraft\Scripts\AeroplaneControlSurfaceAnimator.cs" />
-     <Compile Include="Assets\Standard Assets\Vehicles\Aircraft\Scripts\AeroplaneController.cs" />
-     <Compile Include="Assets\Standard Assets\Vehicles\Aircraft\Scripts\AeroplanePropellerAnimator.cs" />
-     <Compile Include="Assets\Standard Assets\Vehicles\Aircraft\Scripts\AeroplaneUserControl2Axis.cs" />
-     <Compile Include="Assets\Standard Assets\Vehicles\Aircraft\Scripts\AeroplaneUserControl4Axis.cs" />
-     <Compile Include="Assets\Standard Assets\Vehicles\Aircraft\Scripts\BulletMove.cs" />
-     <Compile Include="Assets\Standard Assets\Vehicles\Aircraft\Scripts\GunController.cs" />
-     <Compile Include="Assets\Standard Assets\Vehicles\Aircraft\Scripts\InputController.cs" />
-     <Compile Include="Assets\Standard Assets\Vehicles\Aircraft\Scripts\JetParticleEffect.cs" />
-     <Compile Include="Assets\Standard Assets\Vehicles\Aircraft\Scripts\LandingGear.cs" />
-     <Compile Include="Assets\Standard Assets\Vehicles\Car\Scripts\BrakeLight.cs" />
-     <Compile Include="Assets\Standard Assets\Vehicles\Car\Scripts\CarAIControl.cs" />
-     <Compile Include="Assets\Standard Assets\Vehicles\Car\Scripts\CarAudio.cs" />
-     <Compile Include="Assets\Standard Assets\Vehicles\Car\Scripts\CarController.cs" />
-     <Compile Include="Assets\Standard Assets\Vehicles\Car\Scripts\CarSelfRighting.cs" />
-     <Compile Include="Assets\Standard Assets\Vehicles\Car\Scripts\CarUserControl.cs" />
-     <Compile Include="Assets\Standard Assets\Vehicles\Car\Scripts\Mudguard.cs" />
-     <Compile Include="Assets\Standard Assets\Vehicles\Car\Scripts\SkidTrail.cs" />
-     <Compile Include="Assets\Standard Assets\Vehicles\Car\Scripts\Suspension.cs" />
-     <Compile Include="Assets\Standard Assets\Vehicles\Car\Scripts\WheelEffects.cs" />
-     <None Include="Assets\PorglezompPyroclastics\Explosion.shader" />
-     <None Include="Assets\Standard Assets\Vehicles\Car\Shaders\DiffuseReflectiveShader.shader" />
-     <None Include="Assets\Standard Assets\Vehicles\Aircraft\AircraftGuidelines.txt" />
-     <None Include="Assets\Standard Assets\Vehicles\Car\Shaders\ReflectiveDiffuseSpecTransp.shader" />
-     <None Include="Assets\Standard Assets\Vehicles\Car\Shaders\ReflectiveDiffuseSpec.shader" />
-     <None Include="Assets\sky5X\README.txt" />
-     <None Include="Assets\Standard Assets\CrossPlatformInput\CrossPlatformInputGuidelines.txt" />
-     <None Include="Assets\Standard Assets\Vehicles\Car\CarGuidelines.txt" />
-     <None Include="Assets\PorglezompPyroclastics\README.txt" />
+     <Compile Include="assets\standard assets\crossplatforminput\Scripts\AxisTouchButton.cs" />
+     <Compile Include="assets\standard assets\crossplatforminput\Scripts\ButtonHandler.cs" />
+     <Compile Include="assets\standard assets\crossplatforminput\Scripts\CrossPlatformInputManager.cs" />
+     <Compile Include="assets\standard assets\crossplatforminput\Scripts\InputAxisScrollbar.cs" />
+     <Compile Include="assets\standard assets\crossplatforminput\Scripts\Joystick.cs" />
+     <Compile Include="assets\standard assets\crossplatforminput\Scripts\MobileControlRig.cs" />
+     <Compile Include="assets\standard assets\crossplatforminput\Scripts\PlatformSpecific\MobileInput.cs" />
+     <Compile Include="assets\standard assets\crossplatforminput\Scripts\PlatformSpecific\StandaloneInput.cs" />
+     <Compile Include="assets\standard assets\crossplatforminput\Scripts\TiltInput.cs" />
+     <Compile Include="assets\standard assets\crossplatforminput\Scripts\TouchPad.cs" />
+     <Compile Include="assets\standard assets\crossplatforminput\Scripts\VirtualInput.cs" />
+     <Compile Include="assets\standard assets\vehicles\aircraft\Scripts\AeroplaneAiControl.cs" />
+     <Compile Include="assets\standard assets\vehicles\aircraft\Scripts\AeroplaneAudio.cs" />
+     <Compile Include="assets\standard assets\vehicles\aircraft\Scripts\AeroplaneControlSurfaceAnimator.cs" />
+     <Compile Include="assets\standard assets\vehicles\aircraft\Scripts\AeroplaneController.cs" />
+     <Compile Include="assets\standard assets\vehicles\aircraft\Scripts\AeroplanePropellerAnimator.cs" />
+     <Compile Include="assets\standard assets\vehicles\aircraft\Scripts\AeroplaneUserControl2Axis.cs" />
+     <Compile Include="assets\standard assets\vehicles\aircraft\Scripts\AeroplaneUserControl4Axis.cs" />
+     <Compile Include="assets\standard assets\vehicles\aircraft\Scripts\BulletMove.cs" />
+     <Compile Include="assets\standard assets\vehicles\aircraft\Scripts\GunController.cs" />
+     <Compile Include="assets\standard assets\vehicles\aircraft\Scripts\InputController.cs" />
+     <Compile Include="assets\standard assets\vehicles\aircraft\Scripts\JetParticleEffect.cs" />
+     <Compile Include="assets\standard assets\vehicles\aircraft\Scripts\LandingGear.cs" />
+     <Compile Include="assets\standard assets\vehicles\car\Scripts\BrakeLight.cs" />
+     <Compile Include="assets\standard assets\vehicles\car\Scripts\CarAIControl.cs" />
+     <Compile Include="assets\standard assets\vehicles\car\Scripts\CarAudio.cs" />
+     <Compile Include="assets\standard assets\vehicles\car\Scripts\CarController.cs" />
+     <Compile Include="assets\standard assets\vehicles\car\Scripts\CarSelfRighting.cs" />
+     <Compile Include="assets\standard assets\vehicles\car\Scripts\CarUserControl.cs" />
+     <Compile Include="assets\standard assets\vehicles\car\Scripts\Mudguard.cs" />
+     <Compile Include="assets\standard assets\vehicles\car\Scripts\SkidTrail.cs" />
+     <Compile Include="assets\standard assets\vehicles\car\Scripts\Suspension.cs" />
+     <Compile Include="assets\standard assets\vehicles\car\Scripts\WheelEffects.cs" />
+     <None Include="assets\PorglezompPyroclastics\Explosion.shader" />
+     <None Include="assets\standard assets\vehicles\car\Shaders\DiffuseReflectiveShader.shader" />
+     <None Include="assets\standard assets\vehicles\aircraft\AircraftGuidelines.txt" />
+     <None Include="assets\standard assets\vehicles\car\Shaders\ReflectiveDiffuseSpecTransp.shader" />
+     <None Include="assets\standard assets\vehicles\car\Shaders\ReflectiveDiffuseSpec.shader" />
+     <None Include="assets\sky5X\README.txt" />
+     <None Include="assets\standard assets\crossplatforminput\CrossPlatformInputGuidelines.txt" />
+     <None Include="assets\standard assets\vehicles\car\CarGuidelines.txt" />
+     <None Include="assets\PorglezompPyroclastics\README.txt" />
  <Reference Include="UnityEngine.UI">
- <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
+ <HintPath>/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
+ </Reference>
+ <Reference Include="UnityEngine.Networking">
+ <HintPath>/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/Networking/UnityEngine.Networking.dll</HintPath>
+ </Reference>
+ <Reference Include="UnityEngine.Analytics">
+ <HintPath>/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/UnityAnalytics/UnityEngine.Analytics.dll</HintPath>
  </Reference>
  <Reference Include="UnityEditor.iOS.Extensions.Xcode">
- <HintPath>C:/Program Files/Unity/Editor/Data/PlaybackEngines/iossupport/UnityEditor.iOS.Extensions.Xcode.dll</HintPath>
+ <HintPath>/Applications/Unity/Unity.app/Contents/PlaybackEngines/iOSSupport/UnityEditor.iOS.Extensions.Xcode.dll</HintPath>
  </Reference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
