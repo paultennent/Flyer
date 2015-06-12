@@ -17,7 +17,7 @@ public class NewGameController : MonoBehaviour {
 	void Update () {
 		if (itsenabled) {
 			if (Input.GetKeyDown ("space")) {
-				Application.LoadLevel (0);
+				Application.LoadLevel ("intro");
 			}
 			GameObject.Find ("Main Camera").transform.RotateAround (GameObject.Find ("PlayerDeathEffect").transform.position, Vector3.up, 10 * Time.deltaTime);
 		}

@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 
 public class ScoreController : MonoBehaviour {
@@ -41,7 +42,8 @@ public class ScoreController : MonoBehaviour {
 		detailScale = 0.004f;
 		heightScale = 0f;
 		lastLevelChangeTime = Time.time-2;
-		GameObject.Find ("GameOver").GetComponent<TextMesh> ().color = Color.clear;
+		GameObject.Find ("GameOver").GetComponent<Text> ().color = Color.clear;
+		GameObject.Find ("TryAgain").GetComponent<Text> ().color = Color.clear;
 
 		GameObject.Find ("Main Camera").transform.parent = GameObject.Find ("AircraftJet").transform;
 		generator.Generate (detailScale, heightScale);
@@ -72,24 +74,26 @@ public class ScoreController : MonoBehaviour {
 
 			if (Time.time > lastLevelChangeTime + levelChangeInterval) {
 				level += 1;
-				GameObject.Find ("Level").GetComponent<TextMesh> ().text = "Level: " + level;
+				GameObject.Find ("Level").GetComponent<Text> ().text = "Level: " + level;
 				lastLevelChangeTime = Time.time;
 				heightScale += 10;
 				generator.Generate(detailScale, heightScale);
 			}
 
 			if (Time.time > lastLevelChangeTime + levelChangeInterval - levelChangeWarningInterval) {
-				GameObject.Find ("ReadyLevel").GetComponent<TextMesh> ().text = "Ready for Level: " + (level + 1);
-				GameObject.Find ("ReadyLevel").GetComponent<TextMesh> ().color = Color.yellow;
+				GameObject.Find ("ReadyLevel").GetComponent<Text> ().text = "Ready for Level " + (level + 1);
+				GameObject.Find ("ReadyLevel").GetComponent<Text> ().color = Color.white;
 			} else {
-				GameObject.Find ("ReadyLevel").GetComponent<TextMesh> ().color = Color.clear;
+				GameObject.Find ("ReadyLevel").GetComponent<Text> ().color = Color.clear;
 			}
 		} else {
-			GameObject.Find ("GameOver").GetComponent<TextMesh> ().color = Color.yellow;
+			GameObject.Find ("GameOver").GetComponent<Text> ().color = Color.white;
+			GameObject.Find ("TryAgain").GetComponent<Text> ().color = Color.white;
 		}
 
 		int intscore = (int)score;
-		GameObject.Find ("Score").GetComponent<TextMesh> ().text = "Score: " + intscore;
+		GameObject.Find ("Score").GetComponent<Text>().text = "Score: " + intscore;
+
 
 	}
 
@@ -98,16 +102,17 @@ public class ScoreController : MonoBehaviour {
 	}
 
 	void destroyPlane(){
-		GameObject.Find ("GameOver").GetComponent<TextMesh> ().color = Color.yellow;
+		GameObject.Find ("GameOver").GetComponent<Text> ().color = Color.white;
+		GameObject.Find ("TryAgain").GetComponent<Text> ().color = Color.white;
 		GameObject.Find ("Main Camera").transform.parent = GameObject.Find ("Owner").transform;
 		GameObject myBoom; 
 		myBoom = (GameObject) Instantiate (boom, transform.position, Quaternion.identity);
 		myBoom.name = "PlayerDeathEffect";
 		myBoom.GetComponent<AudioSource> ().PlayOneShot (myBoom.GetComponent<AudioSource> ().clip);
 		GameObject.Find ("Controller").GetComponent<NewGameController> ().setEnabled (true);
-		GameObject.Find ("Controller").GetComponent<HighScores> ().showHighScores ();
 		GameObject.Find ("Controller").GetComponent<HighScores> ().addScore ((int)score, DEFAULT_NAME);
-		GameObject.Find ("ReadyLevel").GetComponent<TextMesh> ().color = Color.clear;
+		GameObject.Find ("Controller").GetComponent<HighScores> ().showHighScores ();
+		GameObject.Find ("ReadyLevel").GetComponent<Text> ().color = Color.clear;
 
 		GameObject.Find ("AircraftJet").SetActive (false);
 
@@ -121,7 +126,7 @@ public class ScoreController : MonoBehaviour {
 				if (level > 0){
 					health = health - 10;
 				}
-			GameObject.Find("Health").GetComponent<TextMesh>().text = "Heatlh: "+health;
+			GameObject.Find("Health").GetComponent<Text>().text = "Heatlh: "+health;
 			if (health <= 0){
 				gameRunning=false;
 				destroyPlane();

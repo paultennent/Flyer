@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Text;
 using System.IO; 
+using UnityEngine.UI;
 
 public class HighScores : MonoBehaviour {
 
@@ -10,39 +11,38 @@ public class HighScores : MonoBehaviour {
 	GUIStyle smallFont;
 	int counter = 0;
 	string KEY_NAME = "Highscores";
-
-	bool visible = false;
+	
 	// Use this for initialization
 	void Start () {
-		scores = new int[10] {1,2,3,4,5,6,7,8,9,10};
+		scores = new int[10] {0,0,0,0,0,0,0,0,0,0};
 		names = new string[10] {"Paul","Paul","Paul","Paul","Paul","Paul","Paul","Paul","Paul","Paul"};
 		if (PlayerPrefs.HasKey (KEY_NAME)) {
 			loadPrefs();
 		} else {
-			Load ("highscores.txt");
+			//Load ("highscores.txt");
 		}
 		sortScores ();
 		smallFont = new GUIStyle();
 		GUI.color = Color.yellow;
-		smallFont.fontSize = 32;
-		smallFont.alignment = TextAnchor.MiddleCenter;
+		//smallFont.fontSize = 32;
+		//smallFont.alignment = TextAnchor.MiddleCenter;
+		smallFont.font = new Font ("OUTLAW.ttf");
 	}
 
 	private string getHighScoreText(){
-		string toReturn = "<color=yellow>";
-		toReturn += "<b>High Scores</b>\n\n";
+		//string toReturn = "High Scores\n\n";
+		string toReturn = "High Scores\n\n";
 		for (int i=0; i<scores.Length; i++) {
 			toReturn += names[i];
 			toReturn += ": ";
 			toReturn += scores[i];
 			toReturn += "\n";
 		}
-		toReturn += "</color>";
 		return toReturn;
 	}
 
 	public void showHighScores(){
-		visible = true;
+		GameObject.Find ("HighScores").GetComponent<Text> ().text = getHighScoreText();
 	}
 	// Update is called once per frame
 	void Update () {
@@ -69,12 +69,6 @@ public class HighScores : MonoBehaviour {
 			s += "\n";
 		}
 		return s;
-	}
-
-	void OnGUI(){
-		if (visible) {
-			GUI.Label (new Rect (0, 0, Screen.width, Screen.height), getHighScoreText (),smallFont);
-		}
 	}
 
 	private void handle(string s){

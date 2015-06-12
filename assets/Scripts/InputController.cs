@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 
 public class InputController : MonoBehaviour {
@@ -32,7 +33,7 @@ public class InputController : MonoBehaviour {
 
 		float val = pitch.Remap (-1f, 1f, 0f, 100f);
 		val = Mathf.RoundToInt (val);
-		GameObject.Find("Touch-o-matic").GetComponent<TextMesh>().text = "Touch-o-matic: "+val;
+		GameObject.Find("Touch-o-matic").GetComponent<Text>().text = "Touch-o-matic: "+val;
 	}
 }
 
