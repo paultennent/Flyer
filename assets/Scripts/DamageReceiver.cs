@@ -28,7 +28,16 @@ public class DamageReceiver : MonoBehaviour {
 			myBoom.name = "PlayerDeathEffect";
 			myBoom.GetComponent<AudioSource> ().PlayOneShot (myBoom.GetComponent<AudioSource> ().clip);
 			Destroy(myBoom,1);
+			GameObject.Find ("Controller").GetComponent<NewPlaneController>().enemyDestroyed();
 			Destroy(gameObject);
+		}
+	}
+
+	void OnCollisionEnter (Collision col)
+	{
+		if(col.gameObject.name == "Terrain Plane(Clone)")
+		{
+			ApplyDamage(50);
 		}
 	}
 }

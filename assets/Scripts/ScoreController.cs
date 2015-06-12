@@ -40,7 +40,7 @@ public class ScoreController : MonoBehaviour {
 	public void startGame(){
 		detailScale = 0.004f;
 		heightScale = 0f;
-		lastLevelChangeTime = Time.time;
+		lastLevelChangeTime = Time.time-2;
 		GameObject.Find ("GameOver").GetComponent<TextMesh> ().color = Color.clear;
 
 		GameObject.Find ("Main Camera").transform.parent = GameObject.Find ("AircraftJet").transform;
@@ -61,13 +61,13 @@ public class ScoreController : MonoBehaviour {
 			double val = 0;
 			if (distanceToGround > 0) {
 				val = 100 - distanceToGround;
+				if (val < 0){
+					val = 0;
+				}
 			}
-			//print (val);
 
 			if (level > 0){
 				score = score + (Time.deltaTime * val);
-				int intscore = (int)score;
-				GameObject.Find ("Score").GetComponent<TextMesh> ().text = "Score: " + intscore;
 			}
 
 			if (Time.time > lastLevelChangeTime + levelChangeInterval) {
@@ -76,7 +76,6 @@ public class ScoreController : MonoBehaviour {
 				lastLevelChangeTime = Time.time;
 				heightScale += 10;
 				generator.Generate(detailScale, heightScale);
-				GameObject.Find ("Controller").GetComponent<NewPlaneController> ().addEnemies(level);
 			}
 
 			if (Time.time > lastLevelChangeTime + levelChangeInterval - levelChangeWarningInterval) {
@@ -89,6 +88,13 @@ public class ScoreController : MonoBehaviour {
 			GameObject.Find ("GameOver").GetComponent<TextMesh> ().color = Color.yellow;
 		}
 
+		int intscore = (int)score;
+		GameObject.Find ("Score").GetComponent<TextMesh> ().text = "Score: " + intscore;
+
+	}
+
+	public void addPoints(int points){
+		score = score + (double) points;
 	}
 
 	void destroyPlane(){
@@ -101,6 +107,7 @@ public class ScoreController : MonoBehaviour {
 		GameObject.Find ("Controller").GetComponent<NewGameController> ().setEnabled (true);
 		GameObject.Find ("Controller").GetComponent<HighScores> ().showHighScores ();
 		GameObject.Find ("Controller").GetComponent<HighScores> ().addScore ((int)score, DEFAULT_NAME);
+		GameObject.Find ("ReadyLevel").GetComponent<TextMesh> ().color = Color.clear;
 
 		GameObject.Find ("AircraftJet").SetActive (false);
 

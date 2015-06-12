@@ -11,6 +11,7 @@ public class RadarScript : MonoBehaviour {
 	List<GameObject> borderObjects;
 	public float switchDistance;
 	public Transform helpTransform;
+	public GameObject radarPrefab;
 
 	// Use this for initialization
 	void Start () {
@@ -29,15 +30,18 @@ public class RadarScript : MonoBehaviour {
 				counter--;
 			}
 			else{
-				if(Vector3.Distance(radarObjects[i].transform.position, transform.position) > switchDistance){
-					helpTransform.LookAt(radarObjects[i].transform);
+				Vector3 planeVec = new Vector3(radarObjects[i].transform.position.x, transform.position.y, radarObjects[i].transform.position.z);
+				if(Vector3.Distance(planeVec, transform.position) > switchDistance){
+					helpTransform.LookAt(planeVec);
 					borderObjects[i].transform.position = transform.position + switchDistance*helpTransform.forward;
 					borderObjects[i].layer = LayerMask.NameToLayer("Radar");
 					radarObjects[i].layer = LayerMask.NameToLayer("Invisible");
+					//print ("Blip" + Vector3.Distance(radarObjects[i].transform.position, transform.position));
 				}
 				else{
 					borderObjects[i].layer = LayerMask.NameToLayer("Invisible");
 					radarObjects[i].layer = LayerMask.NameToLayer("Radar");
+					//print ("Real" + Vector3.Distance(radarObjects[i].transform.position, transform.position));
 				}
 			}
 		}
@@ -71,5 +75,8 @@ public class RadarScript : MonoBehaviour {
 		//create mine
 		GameObject m = Instantiate(playerBlipPrefab,transform.position, Quaternion.identity) as GameObject;
 		m.transform.parent = transform;
+
+		GameObject r = Instantiate(radarPrefab,transform.position, Quaternion.identity) as GameObject;
+		r.transform.parent = transform;
 	}
 }
