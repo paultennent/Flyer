@@ -29,8 +29,9 @@ using UnityStandardAssets.CrossPlatformInput;
 			float pitch = 0;
 
 			if (!fullcontrol) {
-				roll = 0;//CrossPlatformInputManager.GetAxis("Horizontal");
+				//roll = 0;//CrossPlatformInputManager.GetAxis("Horizontal");
 				//float pitch = CrossPlatformInputManager.GetAxis("Vertical");
+				roll = GameObject.Find ("Controller").GetComponent<InputController> ().getRoll ();
 				pitch = GameObject.Find ("Controller").GetComponent<InputController> ().getPitch ();
 			} else {
 				roll = CrossPlatformInputManager.GetAxis("Horizontal");

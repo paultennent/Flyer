@@ -6,15 +6,34 @@ public class InputController : MonoBehaviour {
 
 	// Use this for initialization
 	private float pitch;
+	private float roll;
+	Vector2 startPosition;
+	float startTime;
+	Vector3 startTilt;
 
 	void Start () {
 		pitch = 0f;
+		roll = 0f;
+		startTilt = Input.acceleration;
 	}
 
 	public float getPitch(){
 		return pitch;
 	}
+
+	public float getRoll(){
+		return roll;
+	}
+
+	void workFromTilt(){
+		float diff = startTilt.y - Input.acceleration.y;
+		pitch -= diff;
+		diff = startTilt.x - Input.acceleration.x;
+		roll -= diff;
+		startTilt = Input.acceleration;
+	}
 	
+
 	// Update is called once per frame
 	void Update () {
 		if (Input.GetKey("up")) {
@@ -25,6 +44,8 @@ public class InputController : MonoBehaviour {
 			pitch -= 0.1f;
 		}
 
+		workFromTilt ();
+
 		if (Input.GetKeyDown(KeyCode.M)) {
 				GameObject.Find("AircraftJet").GetComponent<AeroplaneUserControl2Axis>().fullcontrol = !GameObject.Find("AircraftJet").GetComponent<AeroplaneUserControl2Axis>().fullcontrol;
 		}
@@ -33,7 +54,10 @@ public class InputController : MonoBehaviour {
 
 		float val = pitch.Remap (-1f, 1f, 0f, 100f);
 		val = Mathf.RoundToInt (val);
-		GameObject.Find("Touch-o-matic").GetComponent<Text>().text = "Touch-o-matic: "+val;
+		try{
+			GameObject.Find("Touch-o-matic").GetComponent<Text>().text = "Touch-o-matic: "+val;
+		}
+		catch{}//we're on ios so it ain't there
 	}
 }
 
