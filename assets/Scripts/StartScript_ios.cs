@@ -24,7 +24,7 @@ public class StartScript_ios : MonoBehaviour {
 				float speed = dist / duration;
 			
 				// Left to right swipe
-				if (startPosition.y < endPosition.y) {
+				if (startPosition.x < endPosition.x) {
 					if (angle < 0)
 						angle = angle * 1.0f;
 						print ("Distance: " + dist + " Angle: " + angle + " Speed: " + speed);
@@ -33,6 +33,18 @@ public class StartScript_ios : MonoBehaviour {
 						Application.LoadLevel ("airshipflyer-ios");
 					}
 				}
+
+				// Right to left swipe
+				if (startPosition.x > endPosition.x) {
+					if (angle < 0)
+						angle = angle * 1.0f;
+					print ("Distance: " + dist + " Angle: " + angle + " Speed: " + speed);
+					
+					if (dist > 300 & angle < 10 & speed > 1000) {
+						Application.LoadLevel ("instructions-ios");
+					}
+				}
+
 			}
 		
 			if (Input.touchCount > 0 & Input.GetTouch (0).phase == TouchPhase.Began) {
