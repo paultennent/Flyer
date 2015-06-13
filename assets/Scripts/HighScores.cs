@@ -33,8 +33,8 @@ public class HighScores : MonoBehaviour {
 		//string toReturn = "High Scores\n\n";
 		string toReturn = "High Scores\n\n";
 		for (int i=0; i<scores.Length; i++) {
-			toReturn += names[i];
-			toReturn += ": ";
+			//toReturn += names[i];
+			//toReturn += ": ";
 			toReturn += scores[i];
 			toReturn += "\n";
 		}
