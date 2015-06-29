@@ -68,6 +68,8 @@ public class ScoreController : MonoBehaviour {
 				}
 			}
 
+			//print (distanceToGround);
+
 			if (level > 0){
 				score = score + (Time.deltaTime * val);
 			}
@@ -113,7 +115,7 @@ public class ScoreController : MonoBehaviour {
 		GameObject.Find ("Controller").GetComponent<HighScores> ().addScore ((int)score, DEFAULT_NAME);
 		GameObject.Find ("Controller").GetComponent<HighScores> ().showHighScores ();
 		GameObject.Find ("ReadyLevel").GetComponent<Text> ().color = Color.clear;
-
+		GameObject.Find ("COntroller").GetComponent<CollectableGenerator> ().setDisabled ();
 		GameObject.Find ("AircraftJet").SetActive (false);
 
 	}
