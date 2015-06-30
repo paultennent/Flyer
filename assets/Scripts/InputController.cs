@@ -10,6 +10,8 @@ public class InputController : MonoBehaviour {
 	Vector2 startPosition;
 	float startTime;
 	Vector3 startTilt;
+	private bool running = true;
+	private double fuel_burn_rate = 50.0;
 
 	void Start () {
 		pitch = 0f;
@@ -17,12 +19,29 @@ public class InputController : MonoBehaviour {
 		startTilt = Input.acceleration;
 	}
 
+	public void setRunning(bool r){
+		running = r;
+	}
+
 	public float getPitch(){
-		return pitch;
+		return 0; //pitch;
 	}
 
 	public float getRoll(){
 		return roll;
+	}
+
+	private void updateFBR(){
+		float r = GameObject.Find ("AircraftJet").transform.position.y;
+		r = r + 50.0f;
+		if (r <= 0.0f) {
+			r = 0f;
+		}
+		if (r >= 99.0f) {
+			r = 99f;
+		}
+		fuel_burn_rate = 100-(double)r;
+		print (fuel_burn_rate);
 	}
 
 	void workFromTilt(){
@@ -58,6 +77,15 @@ public class InputController : MonoBehaviour {
 			GameObject.Find("Touch-o-matic").GetComponent<Text>().text = "Touch-o-matic: "+val;
 		}
 		catch{}//we're on ios so it ain't there
+
+		//check if we're running here
+		if(running){
+			GameObject.Find("AircraftJet").GetComponent<Rigidbody>().AddForce(GameObject.Find("AircraftJet").transform.up * ((float)(val-50)));
+			updateFBR();
+			double fueltoKill = ((double)val) / fuel_burn_rate * Time.deltaTime;
+			GameObject.Find ("AircraftJet").GetComponent<ScoreController> ().modFuel (-fueltoKill);
+		}
+
 	}
 }
 

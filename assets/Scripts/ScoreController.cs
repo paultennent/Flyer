@@ -7,6 +7,7 @@ public class ScoreController : MonoBehaviour {
 	int level = 0;
 	double score = 0;
 	int health = 100;
+	double fuel = 100;
 
 
 	//terrain controller stuff
@@ -36,6 +37,21 @@ public class ScoreController : MonoBehaviour {
 	void Start () {
 		generator = GameObject.Find ("Terrain Generator").GetComponent<TerrainGenerator>();
 		startGame ();
+	}
+
+	public void modFuel(double f){
+		fuel += f;
+		if (f < 0.0) {
+			f = 0.0;
+		}
+	}
+
+	public double getFuel(){
+		return fuel;
+	}
+
+	public bool isGameRunning(){
+		return gameRunning;
 	}
 
 	public void startGame(){
@@ -76,6 +92,7 @@ public class ScoreController : MonoBehaviour {
 
 			if (Time.time > lastLevelChangeTime + levelChangeInterval) {
 				level += 1;
+				fuel += 10;
 				GameObject.Find ("Level").GetComponent<Text> ().text = "Level: " + level;
 				lastLevelChangeTime = Time.time;
 				heightScale += 10;
@@ -96,6 +113,9 @@ public class ScoreController : MonoBehaviour {
 		int intscore = (int)score;
 		GameObject.Find ("Score").GetComponent<Text>().text = "Score: " + intscore;
 
+		int intfuel = (int)fuel;
+		GameObject.Find ("Fuel").GetComponent<Text>().text = "Fuel: " + intfuel;
+
 
 	}
 
@@ -104,6 +124,7 @@ public class ScoreController : MonoBehaviour {
 	}
 
 	void destroyPlane(){
+		GameObject.Find ("Controller").GetComponent<InputController> ().setRunning (false);
 		GameObject.Find ("GameOver").GetComponent<Text> ().color = Color.white;
 		GameObject.Find ("TryAgain").GetComponent<Text> ().color = Color.white;
 		GameObject.Find ("Main Camera").transform.parent = GameObject.Find ("Owner").transform;
@@ -115,7 +136,7 @@ public class ScoreController : MonoBehaviour {
 		GameObject.Find ("Controller").GetComponent<HighScores> ().addScore ((int)score, DEFAULT_NAME);
 		GameObject.Find ("Controller").GetComponent<HighScores> ().showHighScores ();
 		GameObject.Find ("ReadyLevel").GetComponent<Text> ().color = Color.clear;
-		GameObject.Find ("COntroller").GetComponent<CollectableGenerator> ().setDisabled ();
+		GameObject.Find ("Controller").GetComponent<CollectableGenerator> ().setDisabled ();
 		GameObject.Find ("AircraftJet").SetActive (false);
 
 	}

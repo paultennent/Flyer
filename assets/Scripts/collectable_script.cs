@@ -4,7 +4,7 @@ using System.Collections;
 public class collectable_script : MonoBehaviour {
 
 	// Use this for initialization
-	float speed = 10.0f;
+	float speed = 1.0f;
 
 
 	void Start () {
@@ -26,6 +26,7 @@ public class collectable_script : MonoBehaviour {
 				GameObject.Find ("Controller").GetComponent<CollectableGenerator> ().removeCollectable (gameObject);
 				Destroy (gameObject, 0.1f);
 				col.gameObject.GetComponent<ScoreController> ().addPoints (200);
+				col.gameObject.GetComponent<ScoreController> ().modFuel (10);
 			}
 		}
 
