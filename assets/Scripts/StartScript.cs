@@ -16,6 +16,7 @@ public class StartScript : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
+
 		GameObject.Find ("PaulCharacter 1").GetComponent<ThirdPersonCharacter> ().Move(new Vector3(0,0,0),!(input1Active && input2Active),false);
 		if (input1Active && input2Active) {
 			GameObject.Find ("Inst").GetComponent<Text> ().text = "High Five To Launch The Airship";
@@ -35,20 +36,31 @@ public class StartScript : MonoBehaviour {
 		GameObject.Find ("Prop_02").GetComponent<RotatePropIntro> ().engage (input2Active);
 
 
-		if (Input.GetKey (KeyCode.T)) {
-			input1Active = true;
+		GameObject tm = GameObject.Find ("Touchomatic");
+		if (tm != null) {
+			TouchReader tr = tm.GetComponent<TouchReader> ();
+			input1Active = tr.leftCapacitive > 100;
+			input2Active = tr.rightCapacitive > 100;
+			if(tr.connectionStdev>256)
+			{
+				Application.LoadLevel ("airshipflyer-newGUI");
+			}
 		} else {
-			input1Active = false;
+			if (Input.GetKey (KeyCode.T)) {
+				input1Active = true;
+			} else {
+				input1Active = false;
+			}
+
+			if (Input.GetKey (KeyCode.G)) {
+				input2Active = true;
+			} else {
+				input2Active = false;
+			}
+			if (Input.GetKeyDown ("space")) {
+				Application.LoadLevel ("airshipflyer-newGUI");
+			}
 		}
 
-		if (Input.GetKey (KeyCode.G)) {
-			input2Active = true;
-		} else {
-			input2Active = false;
-		}
-
-		if (Input.GetKeyDown ("space")) {
-			Application.LoadLevel ("airshipflyer-newGUI");
-		}
 	}
 }

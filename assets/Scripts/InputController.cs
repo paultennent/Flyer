@@ -55,14 +55,19 @@ public class InputController : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
-		if (Input.GetKey("up")) {
-			pitch += 0.1f;
-		}
+		GameObject tm = GameObject.Find ("Touchomatic");
+		if (tm != null) {
+			TouchReader tr = tm.GetComponent<TouchReader> ();
+			pitch=tr.connectionStdev/256.0f-1.0f;
+		} else {
+			if (Input.GetKey ("up")) {
+				pitch += 0.1f;
+			}
 
-		if (Input.GetKey("down")) {
-			pitch -= 0.1f;
+			if (Input.GetKey ("down")) {
+				pitch -= 0.1f;
+			}
 		}
-
 		workFromTilt ();
 
 		if (Input.GetKeyDown(KeyCode.M)) {
