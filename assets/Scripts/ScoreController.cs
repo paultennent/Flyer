@@ -41,13 +41,17 @@ public class ScoreController : MonoBehaviour {
 
 	public void modFuel(double f){
 		fuel += f;
-		if (f < 0.0) {
-			f = 0.0;
+		if (fuel < 0.0) {
+			fuel = 0.0;
 		}
 	}
 
 	public double getFuel(){
 		return fuel;
+	}
+
+	public int getLevel(){
+		return level;
 	}
 
 	public bool isGameRunning(){
@@ -73,12 +77,13 @@ public class ScoreController : MonoBehaviour {
 			RaycastHit hit;
 			float distanceToGround = 0;
 		
-			if (Physics.Raycast (transform.position, -Vector3.up, out hit, 100.0F))
-				distanceToGround = hit.distance;
+			//if (Physics.Raycast (transform.position, -Vector3.up, out hit, 100.0F))
+				//distanceToGround = hit.distance;
+			distanceToGround = GameObject.Find ("AircraftJet").transform.position.y + 50f;
 
 			double val = 0;
 			if (distanceToGround > 0) {
-				val = 100 - distanceToGround;
+				val = level*10 - distanceToGround;
 				if (val < 0){
 					val = 0;
 				}
@@ -92,7 +97,7 @@ public class ScoreController : MonoBehaviour {
 
 			if (Time.time > lastLevelChangeTime + levelChangeInterval) {
 				level += 1;
-				fuel += 10;
+				fuel += 20;
 				GameObject.Find ("Level").GetComponent<Text> ().text = "Level: " + level;
 				lastLevelChangeTime = Time.time;
 				heightScale += 10;
@@ -147,7 +152,7 @@ public class ScoreController : MonoBehaviour {
 		{
 			if(gameRunning){
 				if (level > 0){
-					health = health - 10;
+					health = health - 5;
 				}
 			GameObject.Find("Health").GetComponent<Text>().text = "Heatlh: "+health;
 			if (health <= 0){

@@ -27,12 +27,14 @@ using UnityStandardAssets.CrossPlatformInput;
 
 			float roll = 0;
 			float pitch = 0;
+			float throttle = 0;
 
 			if (!fullcontrol) {
 				//roll = 0;//CrossPlatformInputManager.GetAxis("Horizontal");
 				//float pitch = CrossPlatformInputManager.GetAxis("Vertical");
 				roll = GameObject.Find ("Controller").GetComponent<InputController> ().getRoll ();
 				pitch = GameObject.Find ("Controller").GetComponent<InputController> ().getPitch ();
+				throttle = GameObject.Find ("Controller").GetComponent<InputController> ().getThrottle ();
 			} else {
 				roll = CrossPlatformInputManager.GetAxis("Horizontal");
 				pitch = CrossPlatformInputManager.GetAxis("Vertical");
@@ -40,7 +42,7 @@ using UnityStandardAssets.CrossPlatformInput;
 			bool airBrakes = CrossPlatformInputManager.GetButton("Fire1");
 
             // auto throttle up, or down if braking.
-            float throttle = airBrakes ? -1 : 1;
+            //float throttle = airBrakes ? -1 : 1;
 #if MOBILE_INPUT
             AdjustInputForMobileControls(ref roll, ref pitch, ref throttle);
 #endif

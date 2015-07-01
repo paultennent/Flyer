@@ -5,13 +5,14 @@ using System.Collections;
 public class InputController : MonoBehaviour {
 
 	// Use this for initialization
-	private float pitch;
-	private float roll;
+	private float pitch = 0;
+	private float roll = 0;
+	private float throttle = 0;
 	Vector2 startPosition;
 	float startTime;
 	Vector3 startTilt;
 	private bool running = true;
-	private double fuel_burn_rate = 50.0;
+	private double fuel_burn_rate = 20.0;
 
 	void Start () {
 		pitch = 0f;
@@ -31,6 +32,10 @@ public class InputController : MonoBehaviour {
 		return roll;
 	}
 
+	public float getThrottle(){
+		return throttle;
+	}
+
 	private void updateFBR(){
 		float r = GameObject.Find ("AircraftJet").transform.position.y;
 		r = r + 50.0f;
@@ -41,7 +46,7 @@ public class InputController : MonoBehaviour {
 			r = 99f;
 		}
 		fuel_burn_rate = 100-(double)r;
-		print (fuel_burn_rate);
+		//print (fuel_burn_rate);
 	}
 
 	void workFromTilt(){
@@ -75,6 +80,7 @@ public class InputController : MonoBehaviour {
 		}
 
 		pitch = Mathf.Clamp (pitch, -1f, 1f);
+		throttle = pitch.Remap (-1f, 1f, -0.1f, 0.5f);
 
 		float val = pitch.Remap (-1f, 1f, 0f, 100f);
 		val = Mathf.RoundToInt (val);
@@ -85,10 +91,26 @@ public class InputController : MonoBehaviour {
 
 		//check if we're running here
 		if(running){
-			GameObject.Find("AircraftJet").GetComponent<Rigidbody>().AddForce(GameObject.Find("AircraftJet").transform.up * ((float)(val-50)));
-			updateFBR();
-			double fueltoKill = ((double)val) / fuel_burn_rate * Time.deltaTime;
-			GameObject.Find ("AircraftJet").GetComponent<ScoreController> ().modFuel (-fueltoKill);
+			double f = GameObject.Find ("AircraftJet").GetComponent<ScoreController> ().getFuel();
+			print ("Fuel:"+f);
+			if(f > 0){
+				if(GameObject.Find ("AircraftJet").GetComponent<ScoreController> ().getLevel() > 0){
+					GameObject.Find("AircraftJet").GetComponent<Rigidbody>().AddForce(GameObject.Find("AircraftJet").transform.up * ((float)((val*4f)-200f)));
+				}
+				else{
+					GameObject.Find("AircraftJet").GetComponent<Rigidbody>().AddForce(GameObject.Find("AircraftJet").transform.up * ((float)((val)-50)));
+				}
+				GameObject.Find ("SimpleFlame(Red)").GetComponent<ParticleSystem>().startSize = throttle.Remap(-0.1f,0.5f,0f,0.5f);
+				//updateFBR();
+				double fueltoKill = ((double)val) / fuel_burn_rate * Time.deltaTime;
+					if(GameObject.Find ("AircraftJet").GetComponent<ScoreController> ().getLevel() > 0){
+						GameObject.Find ("AircraftJet").GetComponent<ScoreController> ().modFuel (-fueltoKill);
+					}
+				}
+			else{
+				GameObject.Find("AircraftJet").GetComponent<Rigidbody>().AddForce(GameObject.Find("AircraftJet").transform.up * (-100f));
+				GameObject.Find ("SimpleFlame(Red)").GetComponent<ParticleSystem>().startSize = 0f;
+			}
 		}
 
 	}

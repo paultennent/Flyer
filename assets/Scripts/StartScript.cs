@@ -43,7 +43,7 @@ public class StartScript : MonoBehaviour {
 			input2Active = tr.rightCapacitive > 100;
 			if(tr.connectionStdev>256)
 			{
-				Application.LoadLevel ("airshipflyer-newGUI");
+				Application.LoadLevel ("airship-flyer-fuel");
 			}
 		} else {
 			if (Input.GetKey (KeyCode.T)) {
@@ -58,7 +58,7 @@ public class StartScript : MonoBehaviour {
 				input2Active = false;
 			}
 			if (Input.GetKeyDown ("space")) {
-				Application.LoadLevel ("airshipflyer-newGUI");
+				Application.LoadLevel ("airship-flyer-fuel");
 			}
 		}
 

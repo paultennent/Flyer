@@ -22,11 +22,12 @@ public class collectable_script : MonoBehaviour {
 	{	
 			if (col.gameObject.name == "AircraftJet") {
 				//print("collected");
-				gameObject.GetComponent<AudioSource> ().Play ();
+				col.gameObject.GetComponent<AudioSource> ().Play ();
 				GameObject.Find ("Controller").GetComponent<CollectableGenerator> ().removeCollectable (gameObject);
-				Destroy (gameObject, 0.1f);
 				col.gameObject.GetComponent<ScoreController> ().addPoints (200);
 				col.gameObject.GetComponent<ScoreController> ().modFuel (10);
+				Destroy (gameObject, 0.0f);
+				
 			}
 		}
 

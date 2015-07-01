@@ -71,7 +71,7 @@ public class TouchReader : MonoBehaviour
 				string line = comport.ReadLine ();
 				if (line != null) {
 					string[] values = line.Split (' ');
-					print (line);
+					//print (line);
 					if (values.Length == 5) {
 						leftCapacitive = int.Parse (values [0]);
 						rightCapacitive = int.Parse (values [1]);
