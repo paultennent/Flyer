@@ -1,11 +1,14 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
 
 public class NewGameController : MonoBehaviour {
 
 
 	Vector2 startPosition;
 	float startTime;
+	double countdownStartTime = 0;
+	double delay = 3.0;
 	private bool itsenabled = false;
 	// Use this for initialization
 	void Start () {
@@ -14,12 +17,28 @@ public class NewGameController : MonoBehaviour {
 
 	public void setEnabled(bool e){
 		itsenabled = e;
+		countdownStartTime = Time.time;
 	}
 
 	// Update is called once per frame
 	void Update () {
 		if (itsenabled) {
-			if (Input.GetKeyDown ("space")) {
+			if(Time.time > countdownStartTime + delay){
+				GameObject.Find ("TryAgain").GetComponent<Text> ().color = Color.white;
+				GameObject tm = GameObject.Find ("Touchomatic");
+				if (tm != null) {
+					TouchReader tr = tm.GetComponent<TouchReader> ();
+					if( tr.leftCapacitive > 100 && tr.rightCapacitive > 100){
+						if(tr.connectionStdev>256)
+						{
+							//GameObject.Find ("Controller").GetComponent<SceneFadeInOut>().EndScene(
+							GameObject.Find ("Controller").GetComponent<SceneFadeInOut>().EndScene("airship-flyer-fuel");
+							//Application.LoadLevel ("airship-flyer-fuel");
+						}
+					}
+				}
+			}
+			else if (Input.GetKeyDown ("space")) {
 				Application.LoadLevel ("intro");
 			}
 			GameObject.Find ("Main Camera").transform.RotateAround (GameObject.Find ("PlayerDeathEffect").transform.position, Vector3.up, 10 * Time.deltaTime);
@@ -41,7 +60,8 @@ public class NewGameController : MonoBehaviour {
 						print ("Distance: " + dist + " Angle: " + angle + " Speed: " + speed);
 						
 						if (dist > 300 & angle < 10 & speed > 1000) {
-							Application.LoadLevel ("intro-ios");
+							//Application.LoadLevel ("intro-ios");
+							GameObject.Find ("Controller").GetComponent<SceneFadeInOut>().EndScene("intro-ios");
 						}
 					}
 				}

@@ -43,7 +43,8 @@ public class StartScript : MonoBehaviour {
 			input2Active = tr.rightCapacitive > 100;
 			if(tr.connectionStdev>256)
 			{
-				Application.LoadLevel ("airship-flyer-fuel");
+				GameObject.Find ("Controller").GetComponent<SceneFadeInOut>().EndScene("airship-flyer-fuel");
+				//Application.LoadLevel ("airship-flyer-fuel");
 			}
 		} else {
 			if (Input.GetKey (KeyCode.T)) {
@@ -58,7 +59,8 @@ public class StartScript : MonoBehaviour {
 				input2Active = false;
 			}
 			if (Input.GetKeyDown ("space")) {
-				Application.LoadLevel ("airship-flyer-fuel");
+				//Application.LoadLevel ("airship-flyer-fuel");
+				GameObject.Find ("Controller").GetComponent<SceneFadeInOut>().EndScene("airship-flyer-fuel");
 			}
 		}
 

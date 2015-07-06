@@ -5,7 +5,7 @@ public class collectable_script : MonoBehaviour {
 
 	// Use this for initialization
 	float speed = 1.0f;
-
+	bool given = false;
 
 	void Start () {
 	
@@ -22,11 +22,15 @@ public class collectable_script : MonoBehaviour {
 	{	
 			if (col.gameObject.name == "AircraftJet") {
 				//print("collected");
-				col.gameObject.GetComponent<AudioSource> ().Play ();
-				GameObject.Find ("Controller").GetComponent<CollectableGenerator> ().removeCollectable (gameObject);
-				col.gameObject.GetComponent<ScoreController> ().addPoints (200);
-				col.gameObject.GetComponent<ScoreController> ().modFuel (10);
-				Destroy (gameObject, 0.0f);
+				
+				if(!given){
+					given = true;
+					col.gameObject.GetComponent<AudioSource> ().Play ();
+					GameObject.Find ("Controller").GetComponent<CollectableGenerator> ().removeCollectable (gameObject);
+					col.gameObject.GetComponent<ScoreController> ().addPoints (200);
+					col.gameObject.GetComponent<ScoreController> ().modFuel (10);
+					Destroy (gameObject);
+				}
 				
 			}
 		}

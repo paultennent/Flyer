@@ -11,6 +11,9 @@ public class HighScores : MonoBehaviour {
 	GUIStyle smallFont;
 	int counter = 0;
 	string KEY_NAME = "Highscores";
+	bool counting = false;
+	double countTimerStart = 0;
+	double backToIntroDelay = 20;
 	
 	// Use this for initialization
 	void Start () {
@@ -27,6 +30,11 @@ public class HighScores : MonoBehaviour {
 		//smallFont.fontSize = 32;
 		//smallFont.alignment = TextAnchor.MiddleCenter;
 		smallFont.font = new Font ("OUTLAW.ttf");
+	}
+
+	public void startCountdown(){
+		countTimerStart = Time.time;
+		counting = true;
 	}
 
 	private string getHighScoreText(){
@@ -46,7 +54,12 @@ public class HighScores : MonoBehaviour {
 	}
 	// Update is called once per frame
 	void Update () {
-		
+		if (counting) {
+
+			if(Time.time > countTimerStart + backToIntroDelay){
+				GameObject.Find ("Controller").GetComponent<SceneFadeInOut>().EndScene("intro");
+			}
+		}
 	}
 
 	public void addScore(int score, string name){

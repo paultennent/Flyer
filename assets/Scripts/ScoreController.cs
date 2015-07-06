@@ -131,7 +131,6 @@ public class ScoreController : MonoBehaviour {
 	void destroyPlane(){
 		GameObject.Find ("Controller").GetComponent<InputController> ().setRunning (false);
 		GameObject.Find ("GameOver").GetComponent<Text> ().color = Color.white;
-		GameObject.Find ("TryAgain").GetComponent<Text> ().color = Color.white;
 		GameObject.Find ("Main Camera").transform.parent = GameObject.Find ("Owner").transform;
 		GameObject myBoom; 
 		myBoom = (GameObject) Instantiate (boom, transform.position, Quaternion.identity);
@@ -140,6 +139,7 @@ public class ScoreController : MonoBehaviour {
 		GameObject.Find ("Controller").GetComponent<NewGameController> ().setEnabled (true);
 		GameObject.Find ("Controller").GetComponent<HighScores> ().addScore ((int)score, DEFAULT_NAME);
 		GameObject.Find ("Controller").GetComponent<HighScores> ().showHighScores ();
+		GameObject.Find ("Controller").GetComponent<HighScores> ().startCountdown ();
 		GameObject.Find ("ReadyLevel").GetComponent<Text> ().color = Color.clear;
 		GameObject.Find ("Controller").GetComponent<CollectableGenerator> ().setDisabled ();
 		GameObject.Find ("AircraftJet").SetActive (false);
