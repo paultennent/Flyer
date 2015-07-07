@@ -66,6 +66,24 @@ public class StartScript : MonoBehaviour {
 
 				}
 			}
+			if(input1Active){
+				if(!GameObject.Find ("PaulCharacter 1").GetComponent<AudioSource>().isPlaying){
+				GameObject.Find ("PaulCharacter 1").GetComponent<AudioSource>().Play();
+				}
+			}else{
+				if(GameObject.Find ("PaulCharacter 1").GetComponent<AudioSource>().isPlaying){
+				GameObject.Find ("PaulCharacter 1").GetComponent<AudioSource>().Stop();
+				}
+			}
+			if(input2Active){
+				if(!GameObject.Find ("AircraftJet").GetComponent<AudioSource>().isPlaying){
+				GameObject.Find ("AircraftJet").GetComponent<AudioSource>().Play();
+				}
+			}else{
+				if(GameObject.Find ("AircraftJet").GetComponent<AudioSource>().isPlaying){
+				GameObject.Find ("AircraftJet").GetComponent<AudioSource>().Stop();
+				}
+			}
 		}
 
 		else {

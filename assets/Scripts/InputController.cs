@@ -15,8 +15,8 @@ public class InputController : MonoBehaviour {
 	private double fuel_burn_rate = 20.0;
 	private float ceiling = 500f;
 	private float teleportPos = -70;
-	private float upperTeleportPos = 500;
-	private float teleportRecoveryPos = -30;
+	private float upperTeleportPos = 1000;
+	private float teleportRecoveryPos = 0;
 
 	void Start () {
 		pitch = 0f;
