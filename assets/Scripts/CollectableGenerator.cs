@@ -36,7 +36,7 @@ public class CollectableGenerator : MonoBehaviour {
 				pos = nc.transform.localPosition;
 
 				pos.z = pos.z + Random.Range (300f, 500f);
-				pos.y = pos.y + Random.Range (-50f, 0f);
+				pos.y = pos.y + Random.Range (-10f, 0f);
 				//pos.x = pos.x + Random.Range (-10f, 10f);
 
 				nc.transform.localPosition = pos;

@@ -14,6 +14,7 @@ public class HighScores : MonoBehaviour {
 	bool counting = false;
 	double countTimerStart = 0;
 	double backToIntroDelay = 20;
+	bool endingScene = false;
 	
 	// Use this for initialization
 	void Start () {
@@ -57,8 +58,11 @@ public class HighScores : MonoBehaviour {
 		if (counting) {
 
 			if(Time.time > countTimerStart + backToIntroDelay){
-				GameObject.Find ("Controller").GetComponent<SceneFadeInOut>().EndScene("intro");
+				endingScene = true;
 			}
+		}
+		if (endingScene) {
+			GameObject.Find ("Controller").GetComponent<SceneFadeInOut>().EndScene("intro");
 		}
 	}
 

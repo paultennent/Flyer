@@ -5,9 +5,13 @@ using System.Collections;
 public class ScoreController : MonoBehaviour {
 
 	int level = 0;
+	double lastDingScore = 0;
+	double dingPoint = 3;
 	double score = 0;
 	int health = 100;
 	double fuel = 100;
+	float scoring_leeway = 10;
+	public Transform Effect;
 
 
 	//terrain controller stuff
@@ -77,13 +81,13 @@ public class ScoreController : MonoBehaviour {
 			RaycastHit hit;
 			float distanceToGround = 0;
 		
-			//if (Physics.Raycast (transform.position, -Vector3.up, out hit, 100.0F))
+
 				//distanceToGround = hit.distance;
 			distanceToGround = GameObject.Find ("AircraftJet").transform.position.y + 50f;
 
 			double val = 0;
 			if (distanceToGround > 0) {
-				val = level*10 - distanceToGround;
+				val = level*10 - (distanceToGround-scoring_leeway);
 				if (val < 0){
 					val = 0;
 				}
@@ -92,7 +96,15 @@ public class ScoreController : MonoBehaviour {
 			//print (distanceToGround);
 
 			if (level > 0){
+				GameObject.Find ("ScoreAura").GetComponent <ParticleSystem>().emissionRate=(float)val*2f;//.enableEmission=(val>0);
 				score = score + (Time.deltaTime * val);
+				if (score > lastDingScore + dingPoint){
+					GameObject.Find("PaulCharacter 1").GetComponent<AudioSource>().Play();
+					lastDingScore = score;			
+				}
+			}else
+			{
+				GameObject.Find ("ScoreAura").GetComponent <ParticleSystem>().emissionRate=0;
 			}
 
 			if (Time.time > lastLevelChangeTime + levelChangeInterval) {
@@ -153,6 +165,7 @@ public class ScoreController : MonoBehaviour {
 			if(gameRunning){
 				if (level > 0){
 					health = health - 5;
+					GameObject.Find("CrashSoundEmitter").GetComponent<AudioSource>().Play();
 				}
 			GameObject.Find("Health").GetComponent<Text>().text = "Heatlh: "+health;
 			if (health <= 0){

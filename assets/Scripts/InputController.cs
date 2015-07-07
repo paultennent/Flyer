@@ -12,12 +12,17 @@ public class InputController : MonoBehaviour {
 	float startTime;
 	Vector3 startTilt;
 	private bool running = true;
-	private double fuel_burn_rate = 15.0;
+	private double fuel_burn_rate = 20.0;
+	private float ceiling = 500f;
+	private float teleportPos = -70;
+	private float upperTeleportPos = 500;
+	private float teleportRecoveryPos = -30;
 
 	void Start () {
 		pitch = 0f;
 		roll = 0f;
 		startTilt = Input.acceleration;
+		GameObject.Find ("AircraftJet").GetComponent<AeroplaneController> ().Immobilize ();
 	}
 
 	public void setRunning(bool r){
@@ -56,6 +61,23 @@ public class InputController : MonoBehaviour {
 		roll -= diff;
 		startTilt = Input.acceleration;
 	}
+
+	void checkCeiling(){
+		if (running) {
+			if (GameObject.Find ("AircraftJet").transform.position.y > ceiling) {
+				pitch = -1;
+			}
+		}
+	}
+
+	void checkForTeleport(){
+		if (running) {
+			GameObject obj = GameObject.Find ("AircraftJet");
+			if (obj.transform.position.y < teleportPos || obj.transform.position.y > upperTeleportPos) {
+				obj.transform.position = new Vector3 (obj.transform.position.x,teleportRecoveryPos,obj.transform.position.z);
+			}
+		}
+	}
 	
 
 	// Update is called once per frame
@@ -74,13 +96,15 @@ public class InputController : MonoBehaviour {
 			}
 		}
 		workFromTilt ();
+		checkCeiling ();
+		checkForTeleport ();
 
 		if (Input.GetKeyDown(KeyCode.M)) {
 				GameObject.Find("AircraftJet").GetComponent<AeroplaneUserControl2Axis>().fullcontrol = !GameObject.Find("AircraftJet").GetComponent<AeroplaneUserControl2Axis>().fullcontrol;
 		}
 
 		pitch = Mathf.Clamp (pitch, -1f, 1f);
-		throttle = pitch.Remap (-1f, 1f, -0.1f, 0.5f);
+		throttle = pitch.Remap (-1f, 1f, -0.0f, 0.5f);
 
 		float val = pitch.Remap (-1f, 1f, 0f, 100f);
 		val = Mathf.RoundToInt (val);
@@ -91,7 +115,7 @@ public class InputController : MonoBehaviour {
 			//print ("Fuel:" + f);
 			if (f > 0) {
 				if (GameObject.Find ("AircraftJet").GetComponent<ScoreController> ().getLevel () > 0) {
-					GameObject.Find ("AircraftJet").GetComponent<Rigidbody> ().AddForce (GameObject.Find ("AircraftJet").transform.up * ((float)((val * 4f) - 200f)));
+					GameObject.Find ("AircraftJet").GetComponent<Rigidbody> ().AddForce (GameObject.Find ("AircraftJet").transform.up * ((float)((val * 5f) - 200f)));
 				} else {
 					GameObject.Find ("AircraftJet").GetComponent<Rigidbody> ().AddForce (GameObject.Find ("AircraftJet").transform.up * ((float)((val) - 50)));
 				}
@@ -102,7 +126,7 @@ public class InputController : MonoBehaviour {
 					GameObject.Find ("AircraftJet").GetComponent<ScoreController> ().modFuel (-fueltoKill);
 				}
 			} else {
-				GameObject.Find ("AircraftJet").GetComponent<Rigidbody> ().AddForce (GameObject.Find ("AircraftJet").transform.up * (-100f));
+				GameObject.Find ("AircraftJet").GetComponent<Rigidbody> ().AddForce (GameObject.Find ("AircraftJet").transform.up * (-100));
 				GameObject.Find ("SimpleFlame(Red)").GetComponent<ParticleSystem> ().startSize = 0f;
 			}
 		} 

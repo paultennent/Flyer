@@ -10,6 +10,7 @@ public class NewGameController : MonoBehaviour {
 	double countdownStartTime = 0;
 	double delay = 3.0;
 	private bool itsenabled = false;
+	private bool endingScene = false;
 	// Use this for initialization
 	void Start () {
 	
@@ -31,9 +32,7 @@ public class NewGameController : MonoBehaviour {
 					if( tr.leftCapacitive > 100 && tr.rightCapacitive > 100){
 						if(tr.connectionStdev>256)
 						{
-							//GameObject.Find ("Controller").GetComponent<SceneFadeInOut>().EndScene(
-							GameObject.Find ("Controller").GetComponent<SceneFadeInOut>().EndScene("airship-flyer-fuel");
-							//Application.LoadLevel ("airship-flyer-fuel");
+							endingScene = true;
 						}
 					}
 				}
@@ -73,6 +72,10 @@ public class NewGameController : MonoBehaviour {
 			}
 			catch{
 				//probably not using a touch enabled device
+			}
+
+			if (endingScene) {
+				GameObject.Find ("Controller").GetComponent<SceneFadeInOut>().EndScene("airship");
 			}
 		
 		}

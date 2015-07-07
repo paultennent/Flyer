@@ -250,7 +250,7 @@ using UnityEngine;
             Altitude = Physics.Raycast(ray, out hit) ? hit.distance + 10 : transform.position.y;
 
 			//adds an altitude limit
-			if (Altitude > 1000) {
+			if (Altitude > 200) {
 			Immobilize ();
 		} else {
 			Reset();

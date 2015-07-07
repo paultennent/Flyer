@@ -1,0 +1,49 @@
+Initialize engine version: 5.1.0f3 (ec70b008569d)
+GfxDevice: creating device client; threaded=1
+Direct3D:
+    Version:  Direct3D 11.0 [level 11.0]
+    Renderer: AMD Radeon HD 6800 Series (ID=0x6738)
+    Vendor:   ATI
+    VRAM:     1011 MB
+Begin MonoManager ReloadAssembly
+Platform assembly: C:\UnityProjects\Flyer\Airship\airship_Data\Managed\UnityEngine.dll (this message is harmless)
+Loading C:\UnityProjects\Flyer\Airship\airship_Data\Managed\UnityEngine.dll into Unity Child Domain
+Platform assembly: C:\UnityProjects\Flyer\Airship\airship_Data\Managed\Assembly-CSharp-firstpass.dll (this message is harmless)
+Loading C:\UnityProjects\Flyer\Airship\airship_Data\Managed\Assembly-CSharp-firstpass.dll into Unity Child Domain
+Platform assembly: C:\UnityProjects\Flyer\Airship\airship_Data\Managed\Assembly-CSharp.dll (this message is harmless)
+Loading C:\UnityProjects\Flyer\Airship\airship_Data\Managed\Assembly-CSharp.dll into Unity Child Domain
+Platform assembly: C:\UnityProjects\Flyer\Airship\airship_Data\Managed\UnityEngine.UI.dll (this message is harmless)
+Loading C:\UnityProjects\Flyer\Airship\airship_Data\Managed\UnityEngine.UI.dll into Unity Child Domain
+Platform assembly: C:\UnityProjects\Flyer\Airship\airship_Data\Managed\UnityEngine.Networking.dll (this message is harmless)
+Loading C:\UnityProjects\Flyer\Airship\airship_Data\Managed\UnityEngine.Networking.dll into Unity Child Domain
+Platform assembly: C:\UnityProjects\Flyer\Airship\airship_Data\Managed\UnityEngine.Analytics.dll (this message is harmless)
+Loading C:\UnityProjects\Flyer\Airship\airship_Data\Managed\UnityEngine.Analytics.dll into Unity Child Domain
+- Completed reload, in  0.048 seconds
+desktop: 1920x1200 60Hz; virtual: 3840x1200 at -1920,0
+<RI> Initializing input.
+<RI> Input initialized.
+<RI> Initialized touch support.
+Platform assembly: C:\UnityProjects\Flyer\Airship\airship_Data\Managed\System.Core.dll (this message is harmless)
+Platform assembly: C:\UnityProjects\Flyer\Airship\airship_Data\Managed\System.dll (this message is harmless)
+Unloading 3 Unused Serialized files (Serialized files now loaded: 0)
+UnloadTime: 2.335480 ms
+
+Unloading 445 unused Assets to reduce memory usage. Loaded Objects now: 671.
+Total: 1.045562 ms (FindLiveObjects: 0.047430 ms CreateObjectMapping: 0.031219 ms MarkObjects: 0.224842 ms  DeleteObjects: 0.741770 ms)
+
+Unloading 2 Unused Serialized files (Serialized files now loaded: 0)
+UnloadTime: 1.828759 ms
+
+Unloading 448 unused Assets to reduce memory usage. Loaded Objects now: 758.
+Total: 1.065375 ms (FindLiveObjects: 0.036623 ms CreateObjectMapping: 0.032120 ms MarkObjects: 0.203228 ms  DeleteObjects: 0.792802 ms)
+
+Look rotation viewing vector is zero
+ 
+(Filename:  Line: 71)
+
+Unloading 1 Unused Serialized files (Serialized files now loaded: 0)
+UnloadTime: 4.055871 ms
+
+Unloading 16963 unused Assets to reduce memory usage. Loaded Objects now: 660.
+Total: 162.755676 ms (FindLiveObjects: 0.536440 ms CreateObjectMapping: 1.400087 ms MarkObjects: 0.249458 ms  DeleteObjects: 160.568802 ms)
+

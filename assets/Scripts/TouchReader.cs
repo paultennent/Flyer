@@ -48,6 +48,13 @@ public class TouchReader : MonoBehaviour
 
 
 	Boolean sentFirst=false;
+
+	void Start(){
+		string[] arguments = Environment.GetCommandLineArgs();
+		if(arguments.Length > 1){
+			port_name = arguments[1];
+		}
+	}
 	// Update is called once per frame
 	void Update ()
 	{
@@ -73,11 +80,16 @@ public class TouchReader : MonoBehaviour
 					string[] values = line.Split (' ');
 					//print (line);
 					if (values.Length == 5) {
+						try{
 						leftCapacitive = int.Parse (values [0]);
 						rightCapacitive = int.Parse (values [1]);
 						connectionMean = int.Parse (values [2]);
 						connectionVariance = int.Parse (values [3]);
 						connectionStdev = int.Parse (values [4]);
+						}
+						catch{
+							//print("Error getting data:" + values);
+						}
 					}
 				}
 			}catch(TimeoutException e)

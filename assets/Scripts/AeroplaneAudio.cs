@@ -32,6 +32,7 @@ using UnityEngine;
         private AudioSource m_WindSoundSource;    // Reference to the AudioSource for the wind.
         private AeroplaneController m_Plane;      // Reference to the aeroplane controller.
         private Rigidbody m_Rigidbody;
+		private float lastThrot = 0f;
 
 
         private void Awake()
@@ -74,18 +75,25 @@ using UnityEngine;
         private void Update()
         {
             // Find what proportion of the engine's power is being used.
-            var enginePowerProportion = Mathf.InverseLerp(0, m_Plane.MaxEnginePower, m_Plane.EnginePower);
+
+		float throttle = GameObject.Find ("Controller").GetComponent<InputController> ().getThrottle () * 50;
+			lastThrot = 0.8f * lastThrot + 0.1f * throttle;
+			lastThrot = Mathf.Clamp (lastThrot, 5f, 50f);
+
+			//print (m_Plane.EnginePower);
+
+			var enginePowerProportion = Mathf.InverseLerp (0, m_Plane.MaxEnginePower, lastThrot);//m_Plane.EnginePower);
 
             // Set the engine's pitch to be proportional to the engine's current power.
             m_EngineSoundSource.pitch = Mathf.Lerp(m_EngineMinThrottlePitch, m_EngineMaxThrottlePitch, enginePowerProportion);
 
             // Increase the engine's pitch by an amount proportional to the aeroplane's forward speed.
             // (this makes the pitch increase when going into a dive!)
-            m_EngineSoundSource.pitch += m_Plane.ForwardSpeed*m_EngineFwdSpeedMultiplier;
+            //m_EngineSoundSource.pitch += m_Plane.ForwardSpeed*m_EngineFwdSpeedMultiplier;
 
             // Set the engine's volume to be proportional to the engine's current power.
-            m_EngineSoundSource.volume = Mathf.InverseLerp(0, m_Plane.MaxEnginePower*m_AdvancedSetttings.engineMasterVolume,
-                                                         m_Plane.EnginePower);
+            m_EngineSoundSource.volume = Mathf.InverseLerp (0, m_Plane.MaxEnginePower * m_AdvancedSetttings.engineMasterVolume,
+		                                               lastThrot);//m_Plane.EnginePower);
 
             // Set the wind's pitch and volume to be proportional to the aeroplane's forward speed.
             float planeSpeed = m_Rigidbody.velocity.magnitude;

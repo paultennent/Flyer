@@ -34,9 +34,13 @@ using UnityEngine;
         private void Update()
         {
             // update the particle system based on the jets throttle
-            m_System.startLifetime = Mathf.Lerp(0.0f, m_OriginalLifetime, m_Jet.Throttle);
-            m_System.startSize = Mathf.Lerp(m_OriginalStartSize*.3f, m_OriginalStartSize, m_Jet.Throttle);
-            m_System.startColor = Color.Lerp(minColour, m_OriginalStartColor, m_Jet.Throttle);
+            //m_System.startLifetime = Mathf.Lerp(0.0f, m_OriginalLifetime, m_Jet.Throttle);
+            //m_System.startSize = Mathf.Lerp(m_OriginalStartSize*.3f, m_OriginalStartSize, m_Jet.Throttle);
+            //m_System.startColor = Color.Lerp(minColour, m_OriginalStartColor, m_Jet.Throttle);
+			float throttle = GameObject.Find ("Controller").GetComponent<InputController> ().getThrottle() * 2;
+			m_System.startLifetime = Mathf.Lerp(0.0f, m_OriginalLifetime, throttle);
+			m_System.startSize = Mathf.Lerp(m_OriginalStartSize*.3f, m_OriginalStartSize, throttle);
+			m_System.startColor = Color.Lerp(minColour, m_OriginalStartColor, throttle);
         }
 
 
