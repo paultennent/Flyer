@@ -67,6 +67,8 @@ using UnityEngine;
             ThrottleInput = throttleInput;
             AirBrakes = airBrakes;
 
+		print ("roll:" + rollInput + " pitch:" + pitchInput + " yaw:" + yawInput + " throttle:" + throttleInput);
+
             ClampInputs();
 
             CalculateRollAndPitchAngles();
@@ -79,7 +81,7 @@ using UnityEngine;
 
             CalculateDrag();
 
-            CaluclateAerodynamicEffect();
+            CalculateAerodynamicEffect();
 
             CalculateLinearForces();
 
@@ -137,7 +139,7 @@ using UnityEngine;
                 PitchInput = -PitchAngle*m_AutoPitchLevel;
                 PitchInput -= Mathf.Abs(m_BankedTurnAmount*m_BankedTurnAmount*m_AutoTurnPitch);
             }
-        }
+	}
 
 
         private void CalculateForwardSpeed()
@@ -171,11 +173,11 @@ using UnityEngine;
             // Air brakes work by directly modifying drag. This part is actually pretty realistic!
             m_Rigidbody.drag = (AirBrakes ? (m_OriginalDrag + extraDrag)*m_AirBrakesEffect : m_OriginalDrag + extraDrag);
             // Forward speed affects angular drag - at high forward speed, it's much harder for the plane to spin
-            m_Rigidbody.angularDrag = m_OriginalAngularDrag*ForwardSpeed;
+		m_Rigidbody.angularDrag = m_OriginalAngularDrag;//*ForwardSpeed;
         }
 
 
-        private void CaluclateAerodynamicEffect()
+        private void CalculateAerodynamicEffect()
         {
             // "Aerodynamic" calculations. This is a very simple approximation of the effect that a plane
             // will naturally try to align itself in the direction that it's facing when moving at speed.

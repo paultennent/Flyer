@@ -19,7 +19,7 @@ public class HighScores : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		scores = new int[10] {0,0,0,0,0,0,0,0,0,0};
-		names = new string[10] {"Paul","Paul","Paul","Paul","Paul","Paul","Paul","Paul","Paul","Paul"};
+		names = new string[10] {"","","","","","","","","",""};
 		if (PlayerPrefs.HasKey (KEY_NAME)) {
 			loadPrefs();
 		} else {
@@ -31,6 +31,12 @@ public class HighScores : MonoBehaviour {
 		//smallFont.fontSize = 32;
 		//smallFont.alignment = TextAnchor.MiddleCenter;
 		smallFont.font = new Font ("OUTLAW.ttf");
+		GameObject tm = GameObject.Find ("Touchomatic");
+		if (tm != null) {
+			TouchReader tr = tm.GetComponent<TouchReader> ();
+			tr.clearClapSensing ();
+		}
+
 	}
 
 	public void startCountdown(){
@@ -42,8 +48,8 @@ public class HighScores : MonoBehaviour {
 		//string toReturn = "High Scores\n\n";
 		string toReturn = "High Scores\n\n";
 		for (int i=0; i<scores.Length; i++) {
-			//toReturn += names[i];
-			//toReturn += ": ";
+			toReturn += names[i];
+			toReturn += ": ";
 			toReturn += scores[i];
 			toReturn += "\n";
 		}
@@ -64,6 +70,17 @@ public class HighScores : MonoBehaviour {
 		if (endingScene) {
 			GameObject.Find ("Controller").GetComponent<SceneFadeInOut>().EndScene("intro");
 		}
+	}
+
+	void OnGUI()
+	{
+		GUI.DrawTexture(new Rect(10, 10, 60, 60), aTexture, ScaleMode.ScaleToFit, true, 10.0F);
+		GUI.Label(new Rect(10, 10, 100, 20), "Hello World!");
+	}
+
+	public int lowScore()
+	{
+		return scores [scores.Length - 1];
 	}
 
 	public void addScore(int score, string name){

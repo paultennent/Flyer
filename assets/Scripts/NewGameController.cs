@@ -13,7 +13,10 @@ public class NewGameController : MonoBehaviour {
 	private bool endingScene = false;
 	// Use this for initialization
 	void Start () {
-	
+		TouchReader tr = TouchReader.GetReader ();
+		if (tr != null) {
+			tr.clearClapSensing ();
+		}
 	}
 
 	public void setEnabled(bool e){
@@ -26,14 +29,12 @@ public class NewGameController : MonoBehaviour {
 		if (itsenabled) {
 			if(Time.time > countdownStartTime + delay){
 				GameObject.Find ("TryAgain").GetComponent<Text> ().color = Color.white;
-				GameObject tm = GameObject.Find ("Touchomatic");
-				if (tm != null) {
-					TouchReader tr = tm.GetComponent<TouchReader> ();
-					if( tr.leftCapacitive > 100 && tr.rightCapacitive > 100){
-						if(tr.connectionStdev>256)
-						{
-							endingScene = true;
-						}
+				TouchReader tr = TouchReader.GetReader ();
+				if (tr != null) {
+					if(tr.clapSensed)
+					{
+						endingScene=true;
+						print ("clappity");
 					}
 				}
 			}

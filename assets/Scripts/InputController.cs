@@ -13,16 +13,19 @@ public class InputController : MonoBehaviour {
 	Vector3 startTilt;
 	private bool running = true;
 	private double fuel_burn_rate = 20.0;
-	private float ceiling = 500f;
+	private float ceiling = 600f;
 	private float teleportPos = -70;
-	private float upperTeleportPos = 1000;
+	private float upperTeleportPos = 1200;
 	private float teleportRecoveryPos = 0;
 
+	private GameObject aircraftJet;
+
 	void Start () {
+		aircraftJet = GameObject.Find ("AircraftJet");
 		pitch = 0f;
 		roll = 0f;
 		startTilt = Input.acceleration;
-		GameObject.Find ("AircraftJet").GetComponent<AeroplaneController> ().Immobilize ();
+		aircraftJet.GetComponent<AeroplaneController> ().Immobilize ();
 	}
 
 	public void setRunning(bool r){
@@ -42,7 +45,7 @@ public class InputController : MonoBehaviour {
 	}
 
 	private void updateFBR(){
-		float r = GameObject.Find ("AircraftJet").transform.position.y;
+		float r = aircraftJet.transform.position.y;
 		r = r + 50.0f;
 		if (r <= 0.0f) {
 			r = 0f;
@@ -62,20 +65,52 @@ public class InputController : MonoBehaviour {
 		startTilt = Input.acceleration;
 	}
 
+
+
+	float ceilingMult=1.0f;
+
 	void checkCeiling(){
+		bool showTooHigh = false;
 		if (running) {
-			if (GameObject.Find ("AircraftJet").transform.position.y > ceiling) {
-				pitch = -1;
+			if (aircraftJet.transform.position.y > ceiling) {
+				pitch=(pitch+1f) * ceilingMult - 1f;
+				ceilingMult-=0.025f;
+				if(ceilingMult<0)ceilingMult=0;
+				//pitch = -1;//
+				showTooHigh=true;
+			}else
+			{
+				pitch=(pitch+1f) * ceilingMult - 1f;
+				ceilingMult+=0.05f;
+				if(ceilingMult>1)ceilingMult=1;
+
 			}
+		}
+		if (showTooHigh) {
+			GameObject.Find ("TooHigh").GetComponent<Text> ().color = Color.white;
+		} else {
+			GameObject.Find ("TooHigh").GetComponent<Text> ().color = Color.clear;
 		}
 	}
 
 	void checkForTeleport(){
 		if (running) {
-			GameObject obj = GameObject.Find ("AircraftJet");
+			GameObject obj = aircraftJet;
 			if (obj.transform.position.y < teleportPos || obj.transform.position.y > upperTeleportPos) {
 				obj.transform.position = new Vector3 (obj.transform.position.x,teleportRecoveryPos,obj.transform.position.z);
 			}
+		}
+	}
+
+	float angleFiltered=45f;
+	void updatePowerGauge(float t){
+		if (running) {
+
+			t = t.Remap (0f, 0.5f, 45f, 315f);
+			angleFiltered = t * 0.1f + 0.9f * angleFiltered;
+
+			Transform go = GameObject.Find ("powergauge").transform;
+			go.localEulerAngles = new Vector3 (0f, 0f, -angleFiltered);
 		}
 	}
 	
@@ -100,35 +135,51 @@ public class InputController : MonoBehaviour {
 		checkForTeleport ();
 
 		if (Input.GetKeyDown(KeyCode.M)) {
-				GameObject.Find("AircraftJet").GetComponent<AeroplaneUserControl2Axis>().fullcontrol = !GameObject.Find("AircraftJet").GetComponent<AeroplaneUserControl2Axis>().fullcontrol;
+				aircraftJet.GetComponent<AeroplaneUserControl2Axis>().fullcontrol = !aircraftJet.GetComponent<AeroplaneUserControl2Axis>().fullcontrol;
 		}
 
 		pitch = Mathf.Clamp (pitch, -1f, 1f);
 		throttle = pitch.Remap (-1f, 1f, -0.0f, 0.5f);
+
+		updatePowerGauge (throttle);
 
 		float val = pitch.Remap (-1f, 1f, 0f, 100f);
 		val = Mathf.RoundToInt (val);
 
 		//check if we're running here
 		if (running) {
-			double f = GameObject.Find ("AircraftJet").GetComponent<ScoreController> ().getFuel ();
+			ScoreController sc=aircraftJet.GetComponent<ScoreController>();
+			Rigidbody rb=aircraftJet.GetComponent<Rigidbody>();
+			double f = aircraftJet.GetComponent<ScoreController> ().getFuel ();
 			//print ("Fuel:" + f);
 			if (f > 0) {
-				if (GameObject.Find ("AircraftJet").GetComponent<ScoreController> ().getLevel () > 0) {
-					GameObject.Find ("AircraftJet").GetComponent<Rigidbody> ().AddForce (GameObject.Find ("AircraftJet").transform.up * ((float)((val * 5f) - 200f)));
+				if (sc.getLevel () > 0) {
+					rb.AddForce (aircraftJet.transform.up * ((float)((val * 5f) - 200f)));
 				} else {
-					GameObject.Find ("AircraftJet").GetComponent<Rigidbody> ().AddForce (GameObject.Find ("AircraftJet").transform.up * ((float)((val) - 50)));
+					rb.AddForce (aircraftJet.transform.up * ((float)((val) - 50)));
 				}
 				GameObject.Find ("SimpleFlame(Red)").GetComponent<ParticleSystem> ().startSize = throttle.Remap (-0.1f, 0.5f, 0f, 0.5f);
 				//updateFBR();
 				double fueltoKill = ((double)val) / fuel_burn_rate * Time.deltaTime;
-				if (GameObject.Find ("AircraftJet").GetComponent<ScoreController> ().getLevel () > 0) {
-					GameObject.Find ("AircraftJet").GetComponent<ScoreController> ().modFuel (-fueltoKill);
+				if (sc.getLevel () > 0) {
+					sc.modFuel (-fueltoKill);
 				}
 			} else {
-				GameObject.Find ("AircraftJet").GetComponent<Rigidbody> ().AddForce (GameObject.Find ("AircraftJet").transform.up * (-100));
+				rb.AddForce (aircraftJet.transform.up * (-100));
 				GameObject.Find ("SimpleFlame(Red)").GetComponent<ParticleSystem> ().startSize = 0f;
 			}
+			if(rb.velocity.y<-150)
+			{
+				rb.velocity=new Vector3(rb.velocity.x,-150,rb.velocity.z);
+			}
+			print(rb.position.y);
+			if(sc.getLevel()==0 && rb.position.y<-40)
+			{
+				rb.velocity=new Vector3(0,rb.velocity.y,0);
+				rb.angularVelocity=new Vector3(0,0,0);
+				rb.rotation=Quaternion.Euler(0,0,0);
+			}
+			print(rb.velocity.y);
 		} 
 	}
 }

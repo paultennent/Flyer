@@ -22,7 +22,7 @@ public class ScoreController : MonoBehaviour {
 	public float maxHeight = 100f;
 	
 	private float detailScale = 0.004f;
-	private float heightScale = 0f;
+	public float heightScale = 0;
 
 	private string DEFAULT_NAME = "Paul";
 
@@ -68,6 +68,7 @@ public class ScoreController : MonoBehaviour {
 		lastLevelChangeTime = Time.time-2;
 		GameObject.Find ("GameOver").GetComponent<Text> ().color = Color.clear;
 		GameObject.Find ("TryAgain").GetComponent<Text> ().color = Color.clear;
+		GameObject.Find ("TooHigh").GetComponent<Text> ().color = Color.clear;
 
 		GameObject.Find ("Main Camera").transform.parent = GameObject.Find ("AircraftJet").transform;
 		generator.Generate (detailScale, heightScale);
@@ -77,7 +78,6 @@ public class ScoreController : MonoBehaviour {
 	void Update () {
 
 		if (gameRunning) {
-
 			RaycastHit hit;
 			float distanceToGround = 0;
 		
@@ -107,6 +107,13 @@ public class ScoreController : MonoBehaviour {
 				GameObject.Find ("ScoreAura").GetComponent <ParticleSystem>().emissionRate=0;
 			}
 
+			if(level==0)
+			{
+				if(distanceToGround<10)
+				{
+					lastLevelChangeTime=Time.time;
+				}
+			}
 			if (Time.time > lastLevelChangeTime + levelChangeInterval) {
 				level += 1;
 				fuel += 20;
@@ -122,6 +129,9 @@ public class ScoreController : MonoBehaviour {
 			} else {
 				GameObject.Find ("ReadyLevel").GetComponent<Text> ().color = Color.clear;
 			}
+
+			score=1;
+			destroyPlane();
 		} else {
 			GameObject.Find ("GameOver").GetComponent<Text> ().color = Color.white;
 			GameObject.Find ("TryAgain").GetComponent<Text> ().color = Color.white;
@@ -148,14 +158,16 @@ public class ScoreController : MonoBehaviour {
 		myBoom = (GameObject) Instantiate (boom, transform.position, Quaternion.identity);
 		myBoom.name = "PlayerDeathEffect";
 		myBoom.GetComponent<AudioSource> ().PlayOneShot (myBoom.GetComponent<AudioSource> ().clip);
-		GameObject.Find ("Controller").GetComponent<NewGameController> ().setEnabled (true);
-		GameObject.Find ("Controller").GetComponent<HighScores> ().addScore ((int)score, DEFAULT_NAME);
-		GameObject.Find ("Controller").GetComponent<HighScores> ().showHighScores ();
-		GameObject.Find ("Controller").GetComponent<HighScores> ().startCountdown ();
 		GameObject.Find ("ReadyLevel").GetComponent<Text> ().color = Color.clear;
 		GameObject.Find ("Controller").GetComponent<CollectableGenerator> ().setDisabled ();
 		GameObject.Find ("AircraftJet").SetActive (false);
+		GameObject.Find ("dial").SetActive (false);
+		enterHighScore ();
+	}
 
+	void enterHighScore()
+	{
+		GameObject.Find ("PhotoPlane").GetComponent<Photobooth> ().showPhotoBooth ((int)score);
 	}
 
 	void OnCollisionEnter (Collision col)
@@ -167,7 +179,7 @@ public class ScoreController : MonoBehaviour {
 					health = health - 5;
 					GameObject.Find("CrashSoundEmitter").GetComponent<AudioSource>().Play();
 				}
-			GameObject.Find("Health").GetComponent<Text>().text = "Heatlh: "+health;
+			GameObject.Find("Health").GetComponent<Text>().text = "Health: "+health;
 			if (health <= 0){
 				gameRunning=false;
 				destroyPlane();

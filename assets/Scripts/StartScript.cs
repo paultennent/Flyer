@@ -9,10 +9,15 @@ public class StartScript : MonoBehaviour {
 	private bool input2Active = false;
 
 	private bool endingScene = false;
+
+	private bool startedHighFive = false;
 	
 	// Use this for initialization
 	void Start () {
-
+		TouchReader tr = TouchReader.GetReader ();
+		if (tr != null) {
+			tr.clearClapSensing ();
+		}
 	}
 	
 	// Update is called once per frame
@@ -37,15 +42,12 @@ public class StartScript : MonoBehaviour {
 			GameObject.Find ("Prop_02").GetComponent<RotatePropIntro> ().engage (input2Active);
 
 
-			GameObject tm = GameObject.Find ("Touchomatic");
-			if (tm != null) {
-				TouchReader tr = tm.GetComponent<TouchReader> ();
+			TouchReader tr = TouchReader.GetReader ();
+			if (tr != null) {
 				input1Active = tr.leftCapacitive > 100;
 				input2Active = tr.rightCapacitive > 100;
-				if (tr.connectionStdev > 256) {
+				if(tr.clapSensed){
 					endingScene = true;
-					//GameObject.Find ("Controller").GetComponent<SceneFadeInOut>().EndScene("instructions");
-					//Application.LoadLevel ("airship-flyer-fuel");
 				}
 			} else {
 				if (Input.GetKey (KeyCode.T)) {
