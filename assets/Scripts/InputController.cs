@@ -18,9 +18,13 @@ public class InputController : MonoBehaviour {
 	private float upperTeleportPos = 1200;
 	private float teleportRecoveryPos = 0;
 
+	private float timout = 60f;
+	private float timeouttime = 0f;
+
 	private GameObject aircraftJet;
 
 	void Start () {
+		timeouttime = Time.time;
 		aircraftJet = GameObject.Find ("AircraftJet");
 		pitch = 0f;
 		roll = 0f;
@@ -123,13 +127,23 @@ public class InputController : MonoBehaviour {
 			pitch=tr.connectionStdev/256.0f-1.0f;
 		} else {
 			if (Input.GetKey ("up")) {
-				pitch += 0.1f;
+				pitch = 1;
 			}
 
 			if (Input.GetKey ("down")) {
 				pitch -= 0.1f;
 			}
 		}
+
+		//handle key input just in case
+		if (Input.GetKey ("up")) {
+			pitch = 1;
+		}
+		
+		if (Input.GetKey ("down")) {
+			pitch -= 0.1f;
+		}
+
 		workFromTilt ();
 		checkCeiling ();
 		checkForTeleport ();
@@ -138,19 +152,30 @@ public class InputController : MonoBehaviour {
 				aircraftJet.GetComponent<AeroplaneUserControl2Axis>().fullcontrol = !aircraftJet.GetComponent<AeroplaneUserControl2Axis>().fullcontrol;
 		}
 
-		pitch = Mathf.Clamp (pitch, -1f, 1f);
-		throttle = pitch.Remap (-1f, 1f, -0.0f, 0.5f);
 
-		updatePowerGauge (throttle);
-
-		float val = pitch.Remap (-1f, 1f, 0f, 100f);
-		val = Mathf.RoundToInt (val);
-
-		//check if we're running here
 		if (running) {
+
+			pitch = Mathf.Clamp (pitch, -1f, 1f);
+
 			ScoreController sc=aircraftJet.GetComponent<ScoreController>();
 			Rigidbody rb=aircraftJet.GetComponent<Rigidbody>();
 			double f = aircraftJet.GetComponent<ScoreController> ().getFuel ();
+
+			if (f > 0){
+				throttle = pitch.Remap (-1f, 1f, -0.0f, 0.5f);
+			}
+			else{
+				throttle = 0f;
+			}
+
+			updatePowerGauge (throttle);
+
+			float val = pitch.Remap (-1f, 1f, 0f, 100f);
+			val = Mathf.RoundToInt (val);
+
+		//check if we're running here
+
+
 			//print ("Fuel:" + f);
 			if (f > 0) {
 				if (sc.getLevel () > 0) {
@@ -172,14 +197,21 @@ public class InputController : MonoBehaviour {
 			{
 				rb.velocity=new Vector3(rb.velocity.x,-150,rb.velocity.z);
 			}
-			print(rb.position.y);
+			//print(rb.position.y);
 			if(sc.getLevel()==0 && rb.position.y<-40)
 			{
 				rb.velocity=new Vector3(0,rb.velocity.y,0);
 				rb.angularVelocity=new Vector3(0,0,0);
 				rb.rotation=Quaternion.Euler(0,0,0);
 			}
-			print(rb.velocity.y);
+			//print(rb.velocity.y);
+
+			if(throttle > 0){
+				timeouttime = Time.time;
+			}
+			if (Time.time - timeouttime > timout){
+				GameObject.Find ("Controller").GetComponent<SceneFadeInOut>().EndScene("intro");
+			}
 		} 
 	}
 }

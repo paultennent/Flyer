@@ -8,35 +8,33 @@ public class HighScores : MonoBehaviour {
 
 	int[] scores;
 	string[] names;
-	GUIStyle smallFont;
+	Texture2D[] pics;
 	int counter = 0;
 	string KEY_NAME = "Highscores";
 	bool counting = false;
 	double countTimerStart = 0;
 	double backToIntroDelay = 20;
 	bool endingScene = false;
+	bool showscores = false;
+	public Font myFont;
+
 	
 	// Use this for initialization
 	void Start () {
 		scores = new int[10] {0,0,0,0,0,0,0,0,0,0};
 		names = new string[10] {"","","","","","","","","",""};
+		pics = new Texture2D[10];
 		if (PlayerPrefs.HasKey (KEY_NAME)) {
 			loadPrefs();
 		} else {
 			//Load ("highscores.txt");
 		}
 		sortScores ();
-		smallFont = new GUIStyle();
-		GUI.color = Color.yellow;
-		//smallFont.fontSize = 32;
-		//smallFont.alignment = TextAnchor.MiddleCenter;
-		smallFont.font = new Font ("OUTLAW.ttf");
 		GameObject tm = GameObject.Find ("Touchomatic");
 		if (tm != null) {
 			TouchReader tr = tm.GetComponent<TouchReader> ();
 			tr.clearClapSensing ();
 		}
-
 	}
 
 	public void startCountdown(){
@@ -57,7 +55,10 @@ public class HighScores : MonoBehaviour {
 	}
 
 	public void showHighScores(){
-		GameObject.Find ("HighScores").GetComponent<Text> ().text = getHighScoreText();
+		System.Diagnostics.Process.Start ("C:\\stopobs.ahk");
+		//GameObject.Find ("HighScores").GetComponent<Text> ().text = getHighScoreText();
+		loadTextures ();
+		showscores = true;
 	}
 	// Update is called once per frame
 	void Update () {
@@ -74,8 +75,26 @@ public class HighScores : MonoBehaviour {
 
 	void OnGUI()
 	{
-		GUI.DrawTexture(new Rect(10, 10, 60, 60), aTexture, ScaleMode.ScaleToFit, true, 10.0F);
-		GUI.Label(new Rect(10, 10, 100, 20), "Hello World!");
+		if (showscores) {
+			//GameObject.Find ("GameOver").GetComponent<Text> ().color = Color.clear;
+	
+			float scale=Screen.height / 1080f;
+
+			GUIStyle gs = new GUIStyle();
+			gs.font = myFont;
+			gs.fontSize = (int)(64f*scale);
+			gs.alignment = TextAnchor.MiddleCenter;
+			gs.normal.textColor = Color.white;
+			GUI.Label (new Rect (0*scale, 80*scale, 1920*scale, 72*scale), "High scores",gs);
+			gs.alignment = TextAnchor.MiddleLeft;
+
+			for (int i=0; i<names.Length; i++) {
+				if (pics[i] != null) {
+					GUI.DrawTexture (new Rect (837*scale, (150 + (i * 80))*scale, 128*scale, 72*scale), pics[i], ScaleMode.ScaleToFit, true);
+					GUI.Label (new Rect (987*scale, (150 + (i * 80))*scale, 300*scale, 72*scale), scores [i].ToString (),gs);
+				}
+			}
+		}
 	}
 
 	public int lowScore()
@@ -170,5 +189,24 @@ public class HighScores : MonoBehaviour {
 			print ("Something went wrong reading high scores");
 			return false;
 		}
+	}
+
+	void loadTextures(){
+		for (int i=0; i<names.Length; i++) {
+			pics [i] = LoadTex (names [i], 128, 72);
+		}
+	}
+
+	public static Texture2D LoadTex(string filePath, int w, int h) {
+		
+		Texture2D tex = null;
+		byte[] fileData;
+		
+		if (File.Exists(filePath))     {
+			fileData = File.ReadAllBytes(filePath);
+			tex = new Texture2D(w, h);
+			tex.LoadImage(fileData); //..this will auto-resize the texture dimensions.
+		}
+		return tex;
 	}
 }

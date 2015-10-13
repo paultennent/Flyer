@@ -6,7 +6,7 @@ public class CollectableGenerator : MonoBehaviour {
 
 	private double nextTime;
 	private List<GameObject> al;
-	bool disabled = false;
+	bool disabled = true;
 
 	public GameObject collectable;
 	// Use this for initialization
@@ -21,6 +21,10 @@ public class CollectableGenerator : MonoBehaviour {
 
 	public void setDisabled(){
 		disabled = true;
+	}
+
+	public void setEnabled(){
+		disabled = false;
 	}
 
 

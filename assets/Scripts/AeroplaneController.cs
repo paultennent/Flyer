@@ -67,7 +67,7 @@ using UnityEngine;
             ThrottleInput = throttleInput;
             AirBrakes = airBrakes;
 
-		print ("roll:" + rollInput + " pitch:" + pitchInput + " yaw:" + yawInput + " throttle:" + throttleInput);
+		//print ("roll:" + rollInput + " pitch:" + pitchInput + " yaw:" + yawInput + " throttle:" + throttleInput);
 
             ClampInputs();
 

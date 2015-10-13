@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+using System.IO;
 
 public class ScoreController : MonoBehaviour {
 
@@ -10,6 +11,7 @@ public class ScoreController : MonoBehaviour {
 	double score = 0;
 	int health = 100;
 	double fuel = 100;
+	int balloonsHit=0;
 	float scoring_leeway = 10;
 	public Transform Effect;
 
@@ -27,7 +29,7 @@ public class ScoreController : MonoBehaviour {
 	private string DEFAULT_NAME = "Paul";
 
 	private double lastLevelChangeTime = 0;
-	private double levelChangeInterval = 15.0;
+	private double levelChangeInterval = 25.0;
 
 	private double levelChangeWarningInterval = 3;
 
@@ -36,11 +38,22 @@ public class ScoreController : MonoBehaviour {
 	private bool gameRunning = true;
 
 	public GameObject boom;
+	private bool hideTouch = false;
+
+	private string m_LogBaseName;
+
+
 	
 	// Use this for initialization
 	void Start () {
 		generator = GameObject.Find ("Terrain Generator").GetComponent<TerrainGenerator>();
 		startGame ();
+		System.Diagnostics.Process.Start ("C:\\startobs.ahk");
+	}
+
+	public void balloonHit ()
+	{
+		balloonsHit += 1;
 	}
 
 	public void modFuel(double f){
@@ -62,7 +75,11 @@ public class ScoreController : MonoBehaviour {
 		return gameRunning;
 	}
 
+	private StreamWriter m_Logfile;
+	float m_LogTime;
+
 	public void startGame(){
+		balloonsHit = 0;
 		detailScale = 0.004f;
 		heightScale = 0f;
 		lastLevelChangeTime = Time.time-2;
@@ -72,12 +89,24 @@ public class ScoreController : MonoBehaviour {
 
 		GameObject.Find ("Main Camera").transform.parent = GameObject.Find ("AircraftJet").transform;
 		generator.Generate (detailScale, heightScale);
+
+		m_LogBaseName="c:\\airshiplogs\\"+System.DateTime.Now.ToString ("yyyyMMdd-HHmmss"); 
+		TouchReader.GetReader().StartLogFile (m_LogBaseName+"-touch.csv");
+		m_Logfile = new StreamWriter (m_LogBaseName+"-game.csv");
+		m_Logfile.WriteLine ("time,level,health,fuel,score,balloons");
+		m_LogTime = Time.time;
 	}
 
 	// Update is called once per frame
 	void Update () {
 
 		if (gameRunning) {
+			if(Input.GetKeyDown("l"))
+			{
+				lastLevelChangeTime=Time.time-levelChangeInterval;
+			}
+
+
 			RaycastHit hit;
 			float distanceToGround = 0;
 		
@@ -96,6 +125,10 @@ public class ScoreController : MonoBehaviour {
 			//print (distanceToGround);
 
 			if (level > 0){
+				if(m_Logfile!=null)
+				{
+					m_Logfile.WriteLine ((Time.time-m_LogTime)+","+level+","+health+","+fuel+","+score+","+balloonsHit);
+				}
 				GameObject.Find ("ScoreAura").GetComponent <ParticleSystem>().emissionRate=(float)val*2f;//.enableEmission=(val>0);
 				score = score + (Time.deltaTime * val);
 				if (score > lastDingScore + dingPoint){
@@ -109,13 +142,40 @@ public class ScoreController : MonoBehaviour {
 
 			if(level==0)
 			{
-				if(distanceToGround<10)
-				{
-					lastLevelChangeTime=Time.time;
+				if(!hideTouch){
+
+					int tutorialPosition=(int)((Time.time-lastLevelChangeTime)/3f);
+					string showString="";
+					string [] tutorialTexts={
+						"Hold the handles and touch Each Other Gently To Fly",
+						"The Harder you touch the higher you fly",
+						"Flying higher burns more fuel",
+						"You get more fuel each level",
+						"Fly very low to collect coins for points",
+						"As the levels go up the terrain gets harder",
+						"Bonus balloons give you extra fuel",
+						"Good Luck"
+					};
+					if(tutorialPosition<tutorialTexts.Length)
+					{
+						showString= tutorialTexts[tutorialPosition];
+					}
+					if(distanceToGround<1)
+					{
+						lastLevelChangeTime+=Time.deltaTime;
+						showString= "Touch each other to fly";
+						//					lastLevelChangeTime=Time.time;
+					}
+					GameObject.Find ("ReadyLevel").GetComponent<Text> ().color = Color.white;
+					GameObject.Find ("ReadyLevel").GetComponent<Text> ().text =showString;
 				}
 			}
 			if (Time.time > lastLevelChangeTime + levelChangeInterval) {
 				level += 1;
+				GameObject.Find ("Controller").GetComponent<CollectableGenerator> ().setEnabled ();
+				if(level == 1){
+					levelChangeInterval -= 5;
+				}
 				fuel += 20;
 				GameObject.Find ("Level").GetComponent<Text> ().text = "Level: " + level;
 				lastLevelChangeTime = Time.time;
@@ -124,14 +184,17 @@ public class ScoreController : MonoBehaviour {
 			}
 
 			if (Time.time > lastLevelChangeTime + levelChangeInterval - levelChangeWarningInterval) {
+				hideTouch = true;
 				GameObject.Find ("ReadyLevel").GetComponent<Text> ().text = "Ready for Level " + (level + 1);
 				GameObject.Find ("ReadyLevel").GetComponent<Text> ().color = Color.white;
 			} else {
-				GameObject.Find ("ReadyLevel").GetComponent<Text> ().color = Color.clear;
+				if(hideTouch){
+					GameObject.Find ("ReadyLevel").GetComponent<Text> ().color = Color.clear;
+				}
 			}
 
-			score=1;
-			destroyPlane();
+			//score=0;
+			//destroyPlane();
 		} else {
 			GameObject.Find ("GameOver").GetComponent<Text> ().color = Color.white;
 			GameObject.Find ("TryAgain").GetComponent<Text> ().color = Color.white;
@@ -151,6 +214,14 @@ public class ScoreController : MonoBehaviour {
 	}
 
 	void destroyPlane(){
+		TouchReader.GetReader ().StopLogFile ();
+
+
+		m_Logfile.Close ();
+
+
+
+
 		GameObject.Find ("Controller").GetComponent<InputController> ().setRunning (false);
 		GameObject.Find ("GameOver").GetComponent<Text> ().color = Color.white;
 		GameObject.Find ("Main Camera").transform.parent = GameObject.Find ("Owner").transform;
@@ -159,6 +230,13 @@ public class ScoreController : MonoBehaviour {
 		myBoom.name = "PlayerDeathEffect";
 		myBoom.GetComponent<AudioSource> ().PlayOneShot (myBoom.GetComponent<AudioSource> ().clip);
 		GameObject.Find ("ReadyLevel").GetComponent<Text> ().color = Color.clear;
+
+		GameObject.Find ("Score").GetComponent<Text> ().color = Color.clear;
+		GameObject.Find ("Health").GetComponent<Text> ().color = Color.clear;
+		GameObject.Find ("Level").GetComponent<Text> ().color = Color.clear;
+		GameObject.Find ("Fuel").GetComponent<Text> ().color = Color.clear;
+
+
 		GameObject.Find ("Controller").GetComponent<CollectableGenerator> ().setDisabled ();
 		GameObject.Find ("AircraftJet").SetActive (false);
 		GameObject.Find ("dial").SetActive (false);
@@ -176,7 +254,7 @@ public class ScoreController : MonoBehaviour {
 		{
 			if(gameRunning){
 				if (level > 0){
-					health = health - 5;
+					health = health - 20;
 					GameObject.Find("CrashSoundEmitter").GetComponent<AudioSource>().Play();
 				}
 			GameObject.Find("Health").GetComponent<Text>().text = "Health: "+health;

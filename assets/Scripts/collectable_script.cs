@@ -27,8 +27,9 @@ public class collectable_script : MonoBehaviour {
 					given = true;
 					col.gameObject.GetComponent<AudioSource> ().Play ();
 					GameObject.Find ("Controller").GetComponent<CollectableGenerator> ().removeCollectable (gameObject);
-					col.gameObject.GetComponent<ScoreController> ().addPoints (200);
+					col.gameObject.GetComponent<ScoreController> ().addPoints (50);
 					col.gameObject.GetComponent<ScoreController> ().modFuel (10);
+					col.gameObject.GetComponent<ScoreController> ().balloonHit();
 					Destroy (gameObject);
 				}
 				

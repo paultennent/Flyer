@@ -17,6 +17,7 @@ public class NewGameController : MonoBehaviour {
 		if (tr != null) {
 			tr.clearClapSensing ();
 		}
+		endingScene = false;
 	}
 
 	public void setEnabled(bool e){
@@ -34,7 +35,6 @@ public class NewGameController : MonoBehaviour {
 					if(tr.clapSensed)
 					{
 						endingScene=true;
-						print ("clappity");
 					}
 				}
 			}
@@ -43,7 +43,7 @@ public class NewGameController : MonoBehaviour {
 			}
 			GameObject.Find ("Main Camera").transform.RotateAround (GameObject.Find ("PlayerDeathEffect").transform.position, Vector3.up, 10 * Time.deltaTime);
 		
-			try{
+/*			try{
 				if (Input.touchCount > 0 & Input.GetTouch (0).phase == TouchPhase.Ended) {
 					Vector2 endPosition = Input.GetTouch (0).position;
 					Vector2 delta = endPosition - startPosition;
@@ -73,7 +73,7 @@ public class NewGameController : MonoBehaviour {
 			}
 			catch{
 				//probably not using a touch enabled device
-			}
+			}*/
 
 			if (endingScene) {
 				GameObject.Find ("Controller").GetComponent<SceneFadeInOut>().EndScene("airship");
