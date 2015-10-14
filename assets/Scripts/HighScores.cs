@@ -55,7 +55,7 @@ public class HighScores : MonoBehaviour {
 	}
 
 	public void showHighScores(){
-		System.Diagnostics.Process.Start ("C:\\stopobs.ahk");
+		System.Diagnostics.Process.Start ("C:\\Dropbox\\Airship\\stopobs.ahk");
 		//GameObject.Find ("HighScores").GetComponent<Text> ().text = getHighScoreText();
 		loadTextures ();
 		showscores = true;
@@ -72,6 +72,7 @@ public class HighScores : MonoBehaviour {
 			GameObject.Find ("Controller").GetComponent<SceneFadeInOut>().EndScene("intro");
 		}
 	}
+	
 
 	void OnGUI()
 	{
@@ -84,7 +85,7 @@ public class HighScores : MonoBehaviour {
 			gs.font = myFont;
 			gs.fontSize = (int)(64f*scale);
 			gs.alignment = TextAnchor.MiddleCenter;
-			gs.normal.textColor = Color.white;
+			gs.normal.textColor = new Color(239f/255f,224f/255f,185/255f);
 			GUI.Label (new Rect (0*scale, 80*scale, 1920*scale, 72*scale), "High scores",gs);
 			gs.alignment = TextAnchor.MiddleLeft;
 

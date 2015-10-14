@@ -11,13 +11,10 @@ public class NewGameController : MonoBehaviour {
 	double delay = 3.0;
 	private bool itsenabled = false;
 	private bool endingScene = false;
+	TouchReader tr;
 	// Use this for initialization
 	void Start () {
-		TouchReader tr = TouchReader.GetReader ();
-		if (tr != null) {
-			tr.clearClapSensing ();
-		}
-		endingScene = false;
+		tr = TouchReader.GetReader ();
 	}
 
 	public void setEnabled(bool e){
@@ -29,7 +26,7 @@ public class NewGameController : MonoBehaviour {
 	void Update () {
 		if (itsenabled) {
 			if(Time.time > countdownStartTime + delay){
-				GameObject.Find ("TryAgain").GetComponent<Text> ().color = Color.white;
+				GameObject.Find ("TryAgain").GetComponent<Text> ().color = new Color(239f/255f,224f/255f,185/255f);
 				TouchReader tr = TouchReader.GetReader ();
 				if (tr != null) {
 					if(tr.clapSensed)
@@ -38,47 +35,17 @@ public class NewGameController : MonoBehaviour {
 					}
 				}
 			}
-			else if (Input.GetKeyDown ("space")) {
-				Application.LoadLevel ("intro");
+			else{
+				if (tr != null) {
+					tr.clearClapSensing ();
+				}
+				endingScene = false;
 			}
 			GameObject.Find ("Main Camera").transform.RotateAround (GameObject.Find ("PlayerDeathEffect").transform.position, Vector3.up, 10 * Time.deltaTime);
 		
-/*			try{
-				if (Input.touchCount > 0 & Input.GetTouch (0).phase == TouchPhase.Ended) {
-					Vector2 endPosition = Input.GetTouch (0).position;
-					Vector2 delta = endPosition - startPosition;
-					
-					float dist = Mathf.Sqrt (Mathf.Pow (delta.x, 2) + Mathf.Pow (delta.y, 2));
-					float angle = Mathf.Atan (delta.y / delta.x) * (180.0f / Mathf.PI);
-					float duration = Time.time - startTime;
-					float speed = dist / duration;
-					
-					// Left to right swipe
-					if (startPosition.y < endPosition.y) {
-						if (angle < 0)
-							angle = angle * 1.0f;
-						print ("Distance: " + dist + " Angle: " + angle + " Speed: " + speed);
-						
-						if (dist > 300 & angle < 10 & speed > 1000) {
-							//Application.LoadLevel ("intro-ios");
-							GameObject.Find ("Controller").GetComponent<SceneFadeInOut>().EndScene("intro-ios");
-						}
-					}
-				}
-				
-				if (Input.touchCount > 0 & Input.GetTouch (0).phase == TouchPhase.Began) {
-					startPosition = Input.GetTouch (0).position;
-					startTime = Time.time;
-				}
-			}
-			catch{
-				//probably not using a touch enabled device
-			}*/
-
 			if (endingScene) {
 				GameObject.Find ("Controller").GetComponent<SceneFadeInOut>().EndScene("airship");
 			}
-		
 		}
 	}
 }

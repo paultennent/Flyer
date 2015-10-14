@@ -46,9 +46,10 @@ public class ScoreController : MonoBehaviour {
 	
 	// Use this for initialization
 	void Start () {
+		Cursor.visible = false;
 		generator = GameObject.Find ("Terrain Generator").GetComponent<TerrainGenerator>();
 		startGame ();
-		System.Diagnostics.Process.Start ("C:\\startobs.ahk");
+		System.Diagnostics.Process.Start ("C:\\Dropbox\\Airship\\startobs.ahk");
 	}
 
 	public void balloonHit ()
@@ -90,7 +91,7 @@ public class ScoreController : MonoBehaviour {
 		GameObject.Find ("Main Camera").transform.parent = GameObject.Find ("AircraftJet").transform;
 		generator.Generate (detailScale, heightScale);
 
-		m_LogBaseName="c:\\airshiplogs\\"+System.DateTime.Now.ToString ("yyyyMMdd-HHmmss"); 
+		m_LogBaseName="C:\\Dropbox\\Airship\\airshiplogs\\"+System.DateTime.Now.ToString ("yyyyMMdd-HHmmss"); 
 		TouchReader.GetReader().StartLogFile (m_LogBaseName+"-touch.csv");
 		m_Logfile = new StreamWriter (m_LogBaseName+"-game.csv");
 		m_Logfile.WriteLine ("time,level,health,fuel,score,balloons");
@@ -166,7 +167,7 @@ public class ScoreController : MonoBehaviour {
 						showString= "Touch each other to fly";
 						//					lastLevelChangeTime=Time.time;
 					}
-					GameObject.Find ("ReadyLevel").GetComponent<Text> ().color = Color.white;
+					GameObject.Find ("ReadyLevel").GetComponent<Text> ().color = new Color(239f/255f,224f/255f,185/255f);
 					GameObject.Find ("ReadyLevel").GetComponent<Text> ().text =showString;
 				}
 			}
@@ -186,7 +187,7 @@ public class ScoreController : MonoBehaviour {
 			if (Time.time > lastLevelChangeTime + levelChangeInterval - levelChangeWarningInterval) {
 				hideTouch = true;
 				GameObject.Find ("ReadyLevel").GetComponent<Text> ().text = "Ready for Level " + (level + 1);
-				GameObject.Find ("ReadyLevel").GetComponent<Text> ().color = Color.white;
+				GameObject.Find ("ReadyLevel").GetComponent<Text> ().color = new Color(239f/255f,224f/255f,185/255f);
 			} else {
 				if(hideTouch){
 					GameObject.Find ("ReadyLevel").GetComponent<Text> ().color = Color.clear;
@@ -196,8 +197,8 @@ public class ScoreController : MonoBehaviour {
 			//score=0;
 			//destroyPlane();
 		} else {
-			GameObject.Find ("GameOver").GetComponent<Text> ().color = Color.white;
-			GameObject.Find ("TryAgain").GetComponent<Text> ().color = Color.white;
+			GameObject.Find ("GameOver").GetComponent<Text> ().color = new Color(239f/255f,224f/255f,185/255f);
+			GameObject.Find ("TryAgain").GetComponent<Text> ().color = new Color(239f/255f,224f/255f,185/255f);
 		}
 
 		int intscore = (int)score;
@@ -223,7 +224,7 @@ public class ScoreController : MonoBehaviour {
 
 
 		GameObject.Find ("Controller").GetComponent<InputController> ().setRunning (false);
-		GameObject.Find ("GameOver").GetComponent<Text> ().color = Color.white;
+		GameObject.Find ("GameOver").GetComponent<Text> ().color = new Color(239f/255f,224f/255f,185/255f);
 		GameObject.Find ("Main Camera").transform.parent = GameObject.Find ("Owner").transform;
 		GameObject myBoom; 
 		myBoom = (GameObject) Instantiate (boom, transform.position, Quaternion.identity);

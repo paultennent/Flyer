@@ -17,6 +17,7 @@ public class StartScript : MonoBehaviour {
 	void Start () {
 		// FORCE RESOLUTION
 		//Screen.SetResolution (960, 540, true);
+		Cursor.visible = false;
 		TouchReader tr = TouchReader.GetReader ();
 		if (tr != null) {
 			tr.clearClapSensing ();
@@ -100,6 +101,11 @@ public class StartScript : MonoBehaviour {
 					if (GameObject.Find ("AircraftJet").GetComponent<AudioSource> ().isPlaying) {
 						GameObject.Find ("AircraftJet").GetComponent<AudioSource> ().Stop ();
 					}
+				}
+
+				//allow clearing high scores (might be necessary);
+				if (Input.GetKeyDown (KeyCode.O)) {
+					PlayerPrefs.DeleteAll();
 				}
 			}
 		}

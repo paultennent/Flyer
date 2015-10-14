@@ -30,9 +30,9 @@ public class WarningCamera : MonoBehaviour {
 		Renderer renderer = GetComponent<Renderer> ();
 		renderer.enabled = true;
 		renderer.material.mainTexture = m_Cam;
-		Vector2 scale=renderer.material.GetTextureScale ("_MainTex");
-		print (scale);
-//		renderer.material.SetTextureScale("_MainTex", new Vector2(-scale.x,scale.y));
+		//Vector2 scale=renderer.material.GetTextureScale ("_MainTex");
+		//print (scale);
+		//renderer.material.SetTextureScale("_MainTex", new Vector2(-scale.x,scale.y));
 		m_Cam.Play ();
 		TouchReader tr = TouchReader.GetReader ();
 		if (tr != null) {
@@ -79,7 +79,7 @@ public class WarningCamera : MonoBehaviour {
 			gs.font = myFont;
 			gs.fontSize = (int)(64f*scale);
 			gs.alignment = TextAnchor.MiddleCenter;
-			gs.normal.textColor = Color.white;
+			gs.normal.textColor = new Color(239f/255f,224f/255f,185/255f);
 
 
 			GUI.DrawTexture (new Rect (835*scale, 50*scale, 250*scale, 218*scale), warningLogo, ScaleMode.ScaleToFit, true);

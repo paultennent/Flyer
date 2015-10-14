@@ -81,7 +81,7 @@ public class Photobooth : MonoBehaviour {
 			gs.font = myFont;
 			gs.fontSize = (int)(64f*scale);
 			gs.alignment = TextAnchor.MiddleCenter;
-			gs.normal.textColor = Color.white;
+			gs.normal.textColor = new Color(239f/255f,224f/255f,185/255f);
 			GUI.Label (new Rect (810*scale, 150*scale, 300*scale, 72*scale), "High Five to take your high score photo!",gs);
 		}
 	}
@@ -91,7 +91,7 @@ public class Photobooth : MonoBehaviour {
 		Texture2D snap = new Texture2D(m_Cam.width, m_Cam.height);
 		snap.SetPixels(m_Cam.GetPixels());
 		snap.Apply();
-		string filename = "c:\\airshipimages\\" + DateTime.Now.ToString ("yyyyMMddHHmmss") + ".png";
+		string filename = "C:\\Dropbox\\Airship\\airshipimages\\" + DateTime.Now.ToString ("yyyyMMddHHmmss") + ".png";
 		System.IO.File.WriteAllBytes(filename, snap.EncodeToPNG());
 		return filename;
 	}
