@@ -2,6 +2,7 @@
 using System.Collections;
 using UnityEngine.UI;
 using System;
+using UnityStandardAssets.ImageEffects;
 
 public class WarningCamera : MonoBehaviour {
 
@@ -22,6 +23,9 @@ public class WarningCamera : MonoBehaviour {
 	
 	public void showPhotoBooth()
 	{
+		//GameObject.Find ("Main Camera").GetComponent<SepiaTone> ().enabled = false;
+		//GameObject.Find ("Main Camera").GetComponent<EdgeDetection> ().enabled = false;
+		//GameObject.Find ("Main Camera").GetComponent<MotionBlur> ().enabled = false;
 		startTime = Time.time;
 		m_Showing = true;
 		WCStaticTextureScript wc = WCStaticTextureScript.GetWC ();
@@ -42,6 +46,9 @@ public class WarningCamera : MonoBehaviour {
 	
 	public void hidePhotoBooth()
 	{
+		//GameObject.Find ("Main Camera").GetComponent<SepiaTone> ().enabled = true;
+		//GameObject.Find ("Main Camera").GetComponent<EdgeDetection> ().enabled = true;
+		//GameObject.Find ("Main Camera").GetComponent<MotionBlur> ().enabled = true;
 		m_Showing = false;
 		m_Cam.Stop ();
 		Renderer renderer = GetComponent<Renderer>();

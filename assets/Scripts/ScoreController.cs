@@ -41,9 +41,8 @@ public class ScoreController : MonoBehaviour {
 	private bool hideTouch = false;
 
 	private string m_LogBaseName;
+	private GameObject myBoom; 
 
-
-	
 	// Use this for initialization
 	void Start () {
 		Cursor.visible = false;
@@ -102,9 +101,8 @@ public class ScoreController : MonoBehaviour {
 	void Update () {
 
 		if (gameRunning) {
-			if(Input.GetKeyDown("l"))
-			{
-				lastLevelChangeTime=Time.time-levelChangeInterval;
+			if (Input.GetKeyDown ("l")) {
+				lastLevelChangeTime = Time.time - levelChangeInterval;
 			}
 
 
@@ -112,42 +110,39 @@ public class ScoreController : MonoBehaviour {
 			float distanceToGround = 0;
 		
 
-				//distanceToGround = hit.distance;
+			//distanceToGround = hit.distance;
 			distanceToGround = GameObject.Find ("AircraftJet").transform.position.y + 50f;
 
 			double val = 0;
 			if (distanceToGround > 0) {
-				val = level*10 - (distanceToGround-scoring_leeway);
-				if (val < 0){
+				val = level * 10 - (distanceToGround - scoring_leeway);
+				if (val < 0) {
 					val = 0;
 				}
 			}
 
 			//print (distanceToGround);
 
-			if (level > 0){
-				if(m_Logfile!=null)
-				{
-					m_Logfile.WriteLine ((Time.time-m_LogTime)+","+level+","+health+","+fuel+","+score+","+balloonsHit);
+			if (level > 0) {
+				if (m_Logfile != null) {
+					m_Logfile.WriteLine ((Time.time - m_LogTime) + "," + level + "," + health + "," + fuel + "," + score + "," + balloonsHit);
 				}
-				GameObject.Find ("ScoreAura").GetComponent <ParticleSystem>().emissionRate=(float)val*2f;//.enableEmission=(val>0);
+				GameObject.Find ("ScoreAura").GetComponent <ParticleSystem> ().emissionRate = (float)val * 2f;//.enableEmission=(val>0);
 				score = score + (Time.deltaTime * val);
-				if (score > lastDingScore + dingPoint){
-					GameObject.Find("PaulCharacter 1").GetComponent<AudioSource>().Play();
+				if (score > lastDingScore + dingPoint) {
+					GameObject.Find ("PaulCharacter 1").GetComponent<AudioSource> ().Play ();
 					lastDingScore = score;			
 				}
-			}else
-			{
-				GameObject.Find ("ScoreAura").GetComponent <ParticleSystem>().emissionRate=0;
+			} else {
+				GameObject.Find ("ScoreAura").GetComponent <ParticleSystem> ().emissionRate = 0;
 			}
 
-			if(level==0)
-			{
-				if(!hideTouch){
+			if (level == 0) {
+				if (!hideTouch) {
 
-					int tutorialPosition=(int)((Time.time-lastLevelChangeTime)/3f);
-					string showString="";
-					string [] tutorialTexts={
+					int tutorialPosition = (int)((Time.time - lastLevelChangeTime) / 3f);
+					string showString = "";
+					string [] tutorialTexts = {
 						"Hold the handles and touch Each Other Gently To Fly",
 						"The Harder you touch the higher you fly",
 						"Flying higher burns more fuel",
@@ -157,39 +152,37 @@ public class ScoreController : MonoBehaviour {
 						"Bonus balloons give you extra fuel",
 						"Good Luck"
 					};
-					if(tutorialPosition<tutorialTexts.Length)
-					{
-						showString= tutorialTexts[tutorialPosition];
+					if (tutorialPosition < tutorialTexts.Length) {
+						showString = tutorialTexts [tutorialPosition];
 					}
-					if(distanceToGround<1)
-					{
-						lastLevelChangeTime+=Time.deltaTime;
-						showString= "Touch each other to fly";
+					if (distanceToGround < 1) {
+						lastLevelChangeTime += Time.deltaTime;
+						showString = "Touch each other to fly";
 						//					lastLevelChangeTime=Time.time;
 					}
-					GameObject.Find ("ReadyLevel").GetComponent<Text> ().color = new Color(239f/255f,224f/255f,185/255f);
-					GameObject.Find ("ReadyLevel").GetComponent<Text> ().text =showString;
+					GameObject.Find ("ReadyLevel").GetComponent<Text> ().color = new Color (239f / 255f, 224f / 255f, 185 / 255f);
+					GameObject.Find ("ReadyLevel").GetComponent<Text> ().text = showString;
 				}
 			}
 			if (Time.time > lastLevelChangeTime + levelChangeInterval) {
 				level += 1;
 				GameObject.Find ("Controller").GetComponent<CollectableGenerator> ().setEnabled ();
-				if(level == 1){
+				if (level == 1) {
 					levelChangeInterval -= 5;
 				}
 				fuel += 20;
 				GameObject.Find ("Level").GetComponent<Text> ().text = "Level: " + level;
 				lastLevelChangeTime = Time.time;
 				heightScale += 10;
-				generator.Generate(detailScale, heightScale);
+				generator.Generate (detailScale, heightScale);
 			}
 
 			if (Time.time > lastLevelChangeTime + levelChangeInterval - levelChangeWarningInterval) {
 				hideTouch = true;
 				GameObject.Find ("ReadyLevel").GetComponent<Text> ().text = "Ready for Level " + (level + 1);
-				GameObject.Find ("ReadyLevel").GetComponent<Text> ().color = new Color(239f/255f,224f/255f,185/255f);
+				GameObject.Find ("ReadyLevel").GetComponent<Text> ().color = new Color (239f / 255f, 224f / 255f, 185 / 255f);
 			} else {
-				if(hideTouch){
+				if (hideTouch) {
 					GameObject.Find ("ReadyLevel").GetComponent<Text> ().color = Color.clear;
 				}
 			}
@@ -197,15 +190,16 @@ public class ScoreController : MonoBehaviour {
 			//score=0;
 			//destroyPlane();
 		} else {
-			GameObject.Find ("GameOver").GetComponent<Text> ().color = new Color(239f/255f,224f/255f,185/255f);
-			GameObject.Find ("TryAgain").GetComponent<Text> ().color = new Color(239f/255f,224f/255f,185/255f);
+			GameObject.Find ("GameOver").GetComponent<Text> ().color = new Color (239f / 255f, 224f / 255f, 185 / 255f);
+			GameObject.Find ("TryAgain").GetComponent<Text> ().color = new Color (239f / 255f, 224f / 255f, 185 / 255f);
 		}
 
 		int intscore = (int)score;
-		GameObject.Find ("Score").GetComponent<Text>().text = "Score: " + intscore;
+		GameObject.Find ("Score").GetComponent<Text> ().text = "Score: " + intscore;
 
 		int intfuel = (int)fuel;
-		GameObject.Find ("Fuel").GetComponent<Text>().text = "Fuel: " + intfuel;
+		GameObject.Find ("Fuel").GetComponent<Text> ().text = "Fuel: " + intfuel;
+
 
 
 	}
@@ -226,7 +220,7 @@ public class ScoreController : MonoBehaviour {
 		GameObject.Find ("Controller").GetComponent<InputController> ().setRunning (false);
 		GameObject.Find ("GameOver").GetComponent<Text> ().color = new Color(239f/255f,224f/255f,185/255f);
 		GameObject.Find ("Main Camera").transform.parent = GameObject.Find ("Owner").transform;
-		GameObject myBoom; 
+
 		myBoom = (GameObject) Instantiate (boom, transform.position, Quaternion.identity);
 		myBoom.name = "PlayerDeathEffect";
 		myBoom.GetComponent<AudioSource> ().PlayOneShot (myBoom.GetComponent<AudioSource> ().clip);
@@ -242,6 +236,7 @@ public class ScoreController : MonoBehaviour {
 		GameObject.Find ("AircraftJet").SetActive (false);
 		GameObject.Find ("dial").SetActive (false);
 		enterHighScore ();
+
 	}
 
 	void enterHighScore()

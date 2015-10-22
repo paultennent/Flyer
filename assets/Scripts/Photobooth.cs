@@ -21,6 +21,7 @@ public class Photobooth : MonoBehaviour {
 	{
 		score = theScore;
 		if (GameObject.Find ("Controller").GetComponent<HighScores> ().lowScore () <= theScore) {
+			GameObject.Find ("PlayerDeathEffect").GetComponent<Renderer> ().enabled = false;
 			m_Showing = true;
 			WCStaticTextureScript wc = WCStaticTextureScript.GetWC ();
 			m_Cam = wc.getTexture ();
@@ -45,7 +46,7 @@ public class Photobooth : MonoBehaviour {
 		m_Cam.Stop ();
 		Renderer renderer = GetComponent<Renderer>();
 		renderer.enabled = false;
-
+		GameObject.Find ("PlayerDeathEffect").GetComponent<Renderer> ().enabled = true;
 		GameObject.Find ("Controller").GetComponent<NewGameController> ().setEnabled (true);
 		GameObject.Find ("Controller").GetComponent<HighScores> ().showHighScores ();
 		GameObject.Find ("Controller").GetComponent<HighScores> ().startCountdown ();
