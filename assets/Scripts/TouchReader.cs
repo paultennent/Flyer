@@ -5,6 +5,8 @@ using System.IO;
 using System.Threading;
 using System;
 using System.Text;
+using System.Net.Sockets;
+using System.Net;
 
 public class TouchReader : MonoBehaviour
 {
@@ -34,9 +36,6 @@ public class TouchReader : MonoBehaviour
 	private string port_name;
 	private string opened_port = "";
 	private SerialPort comport = null;
-	private Thread serialThread = null;
-	private readonly object syncLock = new object ();
-	private readonly object portLock = new object ();
 	[HideInInspector]
 	public int
 		leftCapacitive;
@@ -53,7 +52,6 @@ public class TouchReader : MonoBehaviour
 	public int
 		connectionVariance;
 	private string lastLineRead;
-	private bool threadEnding;
 	[HideInInspector]
 	public Boolean
 		clapSensed = false;
@@ -106,6 +104,9 @@ public class TouchReader : MonoBehaviour
 			port_name = arguments [1];
 		}
 	}
+
+	private bool USE_UDP=false;
+
 	// Update is called once per frame
 	void Update ()
 	{
@@ -114,10 +115,45 @@ public class TouchReader : MonoBehaviour
 			print("One player mode enabled");
 		}
 
+		if (USE_UDP) {
+			UpdateUdp ();
+		} else {
+			UpdateComPortDirect ();
+		}
+	}
 
+	const int LISTEN_PORT = 11123;
+
+	UdpClient udpReceiver=null;
+	IAsyncResult receiveResult=null;
+	IPEndPoint endpoint = new IPEndPoint(IPAddress.Any, LISTEN_PORT);
+
+	private void UpdateUdp()
+	{
+		if (udpReceiver == null) {
+			udpReceiver = new UdpClient (LISTEN_PORT);
+		}
+		if (receiveResult == null) {
+			receiveResult = udpReceiver.BeginReceive (null, null);
+		} 
+		if(receiveResult!=null && receiveResult.IsCompleted)
+		{
+			Byte[] receiveBytes=udpReceiver.EndReceive(receiveResult,ref endpoint);
+			receiveResult=null;
+			string receiveString = Encoding.ASCII.GetString(receiveBytes);
+			if(receiveString!=null)
+			{
+				HandleLine(receiveString);
+			}
+		}
+
+	}
+
+	private void UpdateComPortDirect()
+	{
 		if (opened_port != port_name || comport == null) {
 			try {
-				port_name = Load("comport-data.config");
+				port_name = Load ("comport-data.config");
 				comport = new SerialPort ("\\\\.\\" + port_name, 9600, Parity.None, 8, StopBits.One);
 				comport.ReadTimeout = 10;
 				comport.Open ();
@@ -126,72 +162,73 @@ public class TouchReader : MonoBehaviour
 			} catch (IOException e) {
 				comport.Close ();
 				comport = null;
-				Debug.Log (e);
+				//Debug.Log (e);
 			}
-		} 
-
-		if (sentFirst) {
-			try {
-				string line = comport.ReadLine ();
-				if (line != null) {
-					string[] values = line.Split (' ');
-					if (values.Length == 5) {
+		} else {
+			if (sentFirst) {
+				try {
+					string line = comport.ReadLine ();
+					if (line != null) {
 						try {
-							leftCapacitive = int.Parse (values [0]);
-							rightCapacitive = int.Parse (values [1]);
-							connectionMean = int.Parse (values [2]);
-							connectionVariance = int.Parse (values [3]);
-							connectionStdev = int.Parse (values [4]);
-							if(m_Logfile!=null)
-							{
-								m_Logfile.WriteLine((Time.time-m_LogTime)+","+leftCapacitive+","+rightCapacitive+","+connectionStdev);
+							HandleLine(line);
+								
+							} catch {
+								//print("Error getting data:" + values);
 							}
-							switch(m_Stage)
-							{
-							case ClapStage.SENSED_NONE:
-								// this code forces two players, not one person holding both handles
-								if( ((leftCapacitive>100 && rightCapacitive>100)|| allowSinglePlayer ) && connectionStdev<50)
-								{
-									noTouchTimer+=Time.deltaTime;
-									if(noTouchTimer>0.1f)
-									{
-										m_Stage=ClapStage.SENSED_NO_TOUCH;
-										print ("NT");
-
-									}
-								}else{
-									noTouchTimer=0;
-								}
-								break;
-							case ClapStage.SENSED_NO_TOUCH:
-								if(connectionStdev>200)
-								{
-									print ("SNT");
-									m_Stage=ClapStage.SENSED_TOUCH;
-								}
-								break;
-							case ClapStage.SENSED_TOUCH:
-								if(connectionStdev<50)
-								{
-									print ("SR");
-									m_Stage=ClapStage.SENSED_RELEASE;
-									clapSensed=true;
-								}
-								break;
-							}
-						
-						} catch {
-							//print("Error getting data:" + values);
 						}
-					}
-				}
-			} catch (TimeoutException e) {
 
+				} catch (TimeoutException e) {
+					
+				}
+			}
+			// poll arduino
+			comport.Write ("p");
+			sentFirst = true;
+		}
+	}
+
+	private void HandleLine(String line)
+	{
+//		print(line);
+		string[] values = line.Split (' ');
+		if (values.Length == 5) {
+			leftCapacitive = int.Parse (values [0]);
+			rightCapacitive = int.Parse (values [1]);
+			connectionMean = int.Parse (values [2]);
+			connectionVariance = int.Parse (values [3]);
+			connectionStdev = int.Parse (values [4]);
+			if (m_Logfile != null) {
+				m_Logfile.WriteLine ((Time.time - m_LogTime) + "," + leftCapacitive + "," + rightCapacitive + "," + connectionStdev);
+			}
+			switch (m_Stage) {
+			case ClapStage.SENSED_NONE:
+				// this code forces two players, not one person holding both handles
+				if (((leftCapacitive > 100 && rightCapacitive > 100) || allowSinglePlayer) && connectionStdev < 50) {
+					noTouchTimer += Time.deltaTime;
+					if (noTouchTimer > 0.1f) {
+						m_Stage = ClapStage.SENSED_NO_TOUCH;
+						print ("NT");
+						
+					}
+				} else {
+					noTouchTimer = 0;
+				}
+				break;
+			case ClapStage.SENSED_NO_TOUCH:
+				if (connectionStdev > 200) {
+					print ("SNT");
+					m_Stage = ClapStage.SENSED_TOUCH;
+				}
+				break;
+			case ClapStage.SENSED_TOUCH:
+				if (connectionStdev < 50) {
+					print ("SR");
+					m_Stage = ClapStage.SENSED_RELEASE;
+					clapSensed = true;
+				}
+				break;
 			}
 		}
-		// poll arduino
-		comport.Write ("p");
-		sentFirst = true;
 	}
 
 	private string Load(string fileName)
@@ -203,6 +240,10 @@ public class TouchReader : MonoBehaviour
 			using (theReader)
 			{
 				line = theReader.ReadLine();
+				if(line=="UDP")
+				{
+					print("UDP com reader");
+				}
 				theReader.Close();
 			}
 			return line;
