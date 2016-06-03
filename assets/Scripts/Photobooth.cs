@@ -70,6 +70,10 @@ public class Photobooth : MonoBehaviour {
 				GameObject.Find ("Controller").GetComponent<HighScores> ().addScore ((int)score, name);
 				hidePhotoBooth ();
 			}
+			if(Input.GetKeyDown ("x"))
+			{
+				hidePhotoBooth ();
+			}
 		}
 	}
 

@@ -12,7 +12,7 @@ public class ScoreController : MonoBehaviour {
 	int health = 100;
 	double fuel = 100;
 	int balloonsHit=0;
-	float scoring_leeway = 10;
+	float scoring_leeway = 20;
 	public Transform Effect;
 
 
@@ -109,9 +109,16 @@ public class ScoreController : MonoBehaviour {
 			RaycastHit hit;
 			float distanceToGround = 0;
 		
+			int layerMask=1<<10;
+			if(Physics.Raycast(GameObject.Find ("AircraftJet").transform.position,Vector3.down,out hit,Mathf.Infinity,layerMask))
+			{
+				distanceToGround = hit.distance;
+//				print (distanceToGround);
+			}else
+			{
+				distanceToGround = GameObject.Find ("AircraftJet").transform.position.y + 50f;
+			}
 
-			//distanceToGround = hit.distance;
-			distanceToGround = GameObject.Find ("AircraftJet").transform.position.y + 50f;
 
 			double val = 0;
 			if (distanceToGround > 0) {
@@ -121,7 +128,6 @@ public class ScoreController : MonoBehaviour {
 				}
 			}
 
-			//print (distanceToGround);
 
 			if (level > 0) {
 				if (m_Logfile != null) {

@@ -38,13 +38,34 @@ public class CollectableGenerator : MonoBehaviour {
 				GameObject nc = Instantiate (collectable, pos, Quaternion.identity) as GameObject;
 				nc.transform.parent = GameObject.Find ("AircraftJet").transform;
 				pos = nc.transform.localPosition;
+//				print(nc.transform.position+":air");
 
 				pos.z = pos.z + Random.Range (300f, 500f);
-				pos.y = pos.y + Random.Range (-10f, 0f);
-				//pos.x = pos.x + Random.Range (-10f, 10f);
-
+				//pos.y = pos.y + Random.Range (-10f, 0f);
+				pos.y+=1000;
 				nc.transform.localPosition = pos;
+				nc.transform.parent=null;
+
+				int layerMask=1<<10;
+				RaycastHit hit;
+				Vector3 hitFrom=nc.transform.position;
+				hitFrom.y-=100;
+//				print (hitFrom+"");
+				float distanceToGround = 0;
+				if(Physics.Raycast(hitFrom,Vector3.down,out hit))
+				{
+					Vector3 newPos=hit.point;
+					distanceToGround = hit.distance;
+//					print ("Balloon:"+distanceToGround);
+					newPos.y+=30f;
+					nc.transform.position=newPos;
+//					print(hit.point+":hit");
+				}
+//				nc.transform.parent = GameObject.Find ("AircraftJet").transform;
+//				print (nc.transform.position+":"+nc.transform.localPosition);
+
 				nc.name = "Collectable";
+//				nc.transform.parent = GameObject.Find ("AircraftJet").transform;
 				nc.transform.parent = GameObject.Find ("Collectables").transform;
 				al.Add (nc);
 				//print ("making new collectable");

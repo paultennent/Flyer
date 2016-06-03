@@ -34,6 +34,10 @@ public class NewGameController : MonoBehaviour {
 						endingScene=true;
 					}
 				}
+				if(Input.GetKeyDown("up"))
+				{
+					endingScene=true;
+				}
 			}
 			else{
 				if (tr != null) {

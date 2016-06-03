@@ -73,6 +73,20 @@ public class InputController : MonoBehaviour {
 
 	float ceilingMult=1.0f;
 
+	void checkFuelLow()
+	{
+		bool showFuelLow = false;
+		if (running) {
+			double f = aircraftJet.GetComponent<ScoreController> ().getFuel ();
+			showFuelLow=(f<20);
+		}
+		if (showFuelLow) {
+			GameObject.Find ("FuelLow").GetComponent<Text> ().color = Color.white;
+		} else {
+			GameObject.Find ("FuelLow").GetComponent<Text> ().color = Color.clear;
+		}
+	}
+
 	void checkCeiling(){
 		bool showTooHigh = false;
 		if (running) {
@@ -145,6 +159,7 @@ public class InputController : MonoBehaviour {
 		}
 
 		workFromTilt ();
+		checkFuelLow ();
 		checkCeiling ();
 		checkForTeleport ();
 
