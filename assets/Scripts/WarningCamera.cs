@@ -23,6 +23,7 @@ public class WarningCamera : MonoBehaviour {
 	
 	public void showPhotoBooth()
 	{
+		print ("Show booth");
 		//GameObject.Find ("Main Camera").GetComponent<SepiaTone> ().enabled = false;
 		//GameObject.Find ("Main Camera").GetComponent<EdgeDetection> ().enabled = false;
 		//GameObject.Find ("Main Camera").GetComponent<MotionBlur> ().enabled = false;
@@ -46,6 +47,7 @@ public class WarningCamera : MonoBehaviour {
 	
 	public void hidePhotoBooth()
 	{
+		print ("hide booth");
 		//GameObject.Find ("Main Camera").GetComponent<SepiaTone> ().enabled = true;
 		//GameObject.Find ("Main Camera").GetComponent<EdgeDetection> ().enabled = true;
 		//GameObject.Find ("Main Camera").GetComponent<MotionBlur> ().enabled = true;

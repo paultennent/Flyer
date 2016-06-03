@@ -5,13 +5,18 @@ using System.Collections;
 public class SceneFadeInOut : MonoBehaviour
 {
 	public Image FadeImg;
-	public float fadeSpeed = 1.5f;
+	public float fadeSpeed = 0.5f;
 	public bool sceneStarting = true;
-	
-	
+
+	private float fadePercent = 0;
+
+	private Color startColor;
+
 	void Awake()
 	{
 		FadeImg.rectTransform.localScale = new Vector2(Screen.width, Screen.height);
+		startColor = FadeImg.color;
+		fadePercent = 0f;
 	}
 	
 	void Update()
@@ -26,14 +31,16 @@ public class SceneFadeInOut : MonoBehaviour
 	void FadeToClear()
 	{
 		// Lerp the colour of the image between itself and transparent.
-		FadeImg.color = Color.Lerp(FadeImg.color, Color.clear, fadeSpeed * Time.deltaTime);
+		fadePercent += fadeSpeed * Time.deltaTime;
+		FadeImg.color = Color.Lerp(startColor, Color.clear, fadePercent);
 	}
 	
 	
 	void FadeToBlack()
 	{
 		// Lerp the colour of the image between itself and black.
-		FadeImg.color = Color.Lerp(FadeImg.color, Color.black, fadeSpeed * Time.deltaTime);
+		fadePercent += fadeSpeed * Time.deltaTime;
+		FadeImg.color = Color.Lerp(startColor, Color.black, fadePercent);
 	}
 	
 	
@@ -43,7 +50,7 @@ public class SceneFadeInOut : MonoBehaviour
 		FadeToClear();
 		
 		// If the texture is almost clear...
-		if (FadeImg.color.a <= 0.05f)
+		if (fadePercent > 0.95f)
 		{
 			// ... set the colour to clear and disable the RawImage.
 			FadeImg.color = Color.clear;
@@ -51,6 +58,7 @@ public class SceneFadeInOut : MonoBehaviour
 			
 			// The scene is no longer starting.
 			sceneStarting = false;
+			fadePercent=0;
 		}
 	}
 	
@@ -64,8 +72,10 @@ public class SceneFadeInOut : MonoBehaviour
 		FadeToBlack();
 		
 		// If the screen is almost black...
-		if (FadeImg.color.a >= 0.95f)
+		if (fadePercent >= 0.95f) {
 			// ... reload the level
-			Application.LoadLevel(SceneNumber);
+			fadePercent = 0;
+			Application.LoadLevel (SceneNumber);
+		}
 	}
 } 

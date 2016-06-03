@@ -111,10 +111,10 @@ public class StartScript : MonoBehaviour {
 		}
 
 		else {
-			if (Input.GetKeyDown ("down")) {
-				warningScreenActive = true;
-				GameObject.Find ("PhotoPlane").GetComponent<WarningCamera> ().showPhotoBooth ();
-			}
+//			if (Input.GetKeyDown ("down")) {
+//				warningScreenActive = true;
+//				GameObject.Find ("PhotoPlane").GetComponent<WarningCamera> ().showPhotoBooth ();
+//			}
 			input1Active = true;
 			input2Active = true;
 			GameObject.Find ("Controller").GetComponent<SceneFadeInOut>().EndScene("airship");

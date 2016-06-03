@@ -211,8 +211,10 @@ public class ScoreController : MonoBehaviour {
 	void destroyPlane(){
 		TouchReader.GetReader ().StopLogFile ();
 
-
-		m_Logfile.Close ();
+		if (m_Logfile != null) {
+			m_Logfile.Close ();
+			m_Logfile = null;
+		}
 
 
 

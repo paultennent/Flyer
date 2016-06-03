@@ -77,7 +77,6 @@ public class TouchReader : MonoBehaviour
 		m_Stage = ClapStage.SENSED_NONE;
 		clapSensed = false;
 		noTouchTimer = 0;
-		print (System.Environment.StackTrace);
 	}
 
 	private StreamWriter m_Logfile;
@@ -92,8 +91,10 @@ public class TouchReader : MonoBehaviour
 
 	public void StopLogFile()
 	{
-		m_Logfile.Close ();
-		m_Logfile = null;
+		if (m_Logfile != null) {
+			m_Logfile.Close ();
+			m_Logfile = null;
+		}
 	}
 
 
@@ -240,9 +241,10 @@ public class TouchReader : MonoBehaviour
 			using (theReader)
 			{
 				line = theReader.ReadLine();
-				if(line=="UDP")
+				if(line.StartsWith("UDP"))
 				{
 					print("UDP com reader");
+					USE_UDP=true;
 				}
 				theReader.Close();
 			}

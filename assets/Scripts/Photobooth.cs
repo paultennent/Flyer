@@ -14,7 +14,6 @@ public class Photobooth : MonoBehaviour {
 	void Start () {
 		Renderer renderer = GetComponent<Renderer>();
 		renderer.enabled = false;
-		//showPhotoBooth ();
 	}
 
 	public void showPhotoBooth(int theScore)

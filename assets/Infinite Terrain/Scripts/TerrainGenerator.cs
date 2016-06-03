@@ -44,7 +44,7 @@ public class TerrainGenerator : MonoBehaviour {
         planeCount = buffer * 2 + 1;
         tileX = Mathf.RoundToInt(target.position.x / planeSize);
         tileZ = Mathf.RoundToInt(target.position.z / planeSize);    
-        Generate();
+        //Generate();
     }
     
     public void Generate(float detailScale, float heightScale) {
@@ -89,7 +89,7 @@ public class TerrainGenerator : MonoBehaviour {
         for (int v = 0; v < vertices.Length; v++) {
             // generate the height for current vertex
             Vector3 vertexPosition = plane.transform.position + vertices[v] * planeSize / 10f;
-            float height = SimplexNoise.Noise(vertexPosition.x * detailScale, vertexPosition.z * detailScale);
+			float height = SimplexNoise.Noise(vertexPosition.x * detailScale, vertexPosition.z * detailScale);
             // scale it with the heightScale field
             vertices[v].y = height * heightScale;
         }
@@ -99,7 +99,6 @@ public class TerrainGenerator : MonoBehaviour {
         mesh.RecalculateNormals();
 
         plane.AddComponent<MeshCollider>();
-
         Tile tile = new Tile();
         tile.gameObject = plane;
         tile.tileX = x;
@@ -122,15 +121,29 @@ public class TerrainGenerator : MonoBehaviour {
         // populate a temporary array with the newly made tiles.
         if (changeX != 0) {
             for (i = 0; i < planeCount; i++) {
-                Destroy(terrainTiles[buffer - buffer * changeX, i].gameObject);
-                terrainTiles[buffer - buffer * changeX, i] = null;
+				if(terrainTiles[buffer - buffer * changeX, i]!=null)
+				{
+					Tile t=terrainTiles[buffer - buffer * changeX, i];
+					if(t.gameObject!=null)
+					{
+						Destroy(t.gameObject);
+					}
+                	terrainTiles[buffer - buffer * changeX, i] = null;
+				}
                 newTiles[i] = GenerateTile(tileX + buffer * changeX + changeX, tileZ - buffer + i);
             }
         }
         if (changeZ != 0) {
             for (i = 0; i < planeCount; i++) {
-                Destroy(terrainTiles[i, buffer - buffer * changeZ].gameObject);
-                terrainTiles[i, buffer - buffer * changeZ] = null;
+				if(terrainTiles[i, buffer - buffer * changeZ]!=null)
+				{
+					Tile t=terrainTiles[i, buffer - buffer * changeZ];
+					if(t.gameObject!=null)
+					{
+		                Destroy(t.gameObject);
+					}
+	                terrainTiles[i, buffer - buffer * changeZ] = null;
+				}
                 newTiles[i] = GenerateTile(tileX - buffer + i, tileZ + buffer * changeZ + changeZ);
             }
         }
