@@ -4,7 +4,9 @@ using System.Collections;
 
 public class InputController : MonoBehaviour {
 
-	// Use this for initialization
+
+	private float keyPitch=0;// special pitch for keyboard override
+	private bool keyOverride=false;
 	private float pitch = 0;
 	private float roll = 0;
 	private float throttle = 0;
@@ -87,13 +89,17 @@ public class InputController : MonoBehaviour {
 		}
 	}
 
-	void checkCeiling(){
+	void checkCeiling(ScoreController sc){
 		bool showTooHigh = false;
+		bool showFlyLower = sc.showScoreTimeout();
 		if (running) {
-			if (aircraftJet.transform.position.y > ceiling) {
-				pitch=(pitch+1f) * ceilingMult - 1f;
-				ceilingMult-=0.025f;
+			float height=aircraftJet.transform.position.y;
+			if (height > ceiling) {
+				ceilingMult=1.0f-(height-ceiling)*0.01f;
 				if(ceilingMult<0)ceilingMult=0;
+				pitch=(pitch+1f) * ceilingMult - 1f;
+				//ceilingMult-=0.025f;
+				//if(ceilingMult<0)ceilingMult=0;
 				//pitch = -1;//
 				showTooHigh=true;
 			}else
@@ -108,6 +114,13 @@ public class InputController : MonoBehaviour {
 			GameObject.Find ("TooHigh").GetComponent<Text> ().color = Color.white;
 		} else {
 			GameObject.Find ("TooHigh").GetComponent<Text> ().color = Color.clear;
+		}
+		if (showFlyLower) {
+			GameObject.Find ("FlyLower").GetComponent<Text> ().color = Color.white;
+
+		} else {
+			GameObject.Find ("FlyLower").GetComponent<Text> ().color = Color.clear;
+
 		}
 	}
 
@@ -135,32 +148,37 @@ public class InputController : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
-		GameObject tm = GameObject.Find ("Touchomatic");
-		if (tm != null) {
-			TouchReader tr = tm.GetComponent<TouchReader> ();
-			pitch=tr.connectionStdev/256.0f-1.0f;
-		} else {
-			if (Input.GetKey ("up")) {
-				pitch = 1;
-			}
-
-			if (Input.GetKey ("down")) {
-				pitch -= 0.1f;
-			}
-		}
-
-		//handle key input just in case
+		//handle key input - key input overrides touchomatic for this game
 		if (Input.GetKey ("up")) {
-			pitch = 1;
+			keyOverride=true;
+			keyPitch=1;
+			keyPitch=Mathf.Clamp(keyPitch,-1,1);
 		}
 		
 		if (Input.GetKey ("down")) {
-			pitch -= 0.1f;
+			keyPitch-=Time.deltaTime;
+			keyPitch=Mathf.Clamp(keyPitch,-1,1);
 		}
+
+
+		GameObject tm = GameObject.Find ("Touchomatic");
+		if (!keyOverride) {
+			if (tm != null) {
+				TouchReader tr = tm.GetComponent<TouchReader> ();
+				pitch = tr.connectionStdev / 256.0f - 1.0f;
+			} 
+		} else {
+			pitch=keyPitch;
+			keyPitch=-1;
+//			keyPitch-=Time.deltaTime*3f;
+			keyPitch=Mathf.Clamp(keyPitch,-1,1);
+		}
+
+		ScoreController sc=aircraftJet.GetComponent<ScoreController>();
 
 		workFromTilt ();
 		checkFuelLow ();
-		checkCeiling ();
+		checkCeiling (sc);
 		checkForTeleport ();
 
 		if (Input.GetKeyDown(KeyCode.M)) {
@@ -172,7 +190,6 @@ public class InputController : MonoBehaviour {
 
 			pitch = Mathf.Clamp (pitch, -1f, 1f);
 
-			ScoreController sc=aircraftJet.GetComponent<ScoreController>();
 			Rigidbody rb=aircraftJet.GetComponent<Rigidbody>();
 			double f = aircraftJet.GetComponent<ScoreController> ().getFuel ();
 
@@ -208,18 +225,32 @@ public class InputController : MonoBehaviour {
 				rb.AddForce (aircraftJet.transform.up * (-100));
 				GameObject.Find ("SimpleFlame(Red)").GetComponent<ParticleSystem> ().startSize = 0f;
 			}
+			// terminal velocity in falling
 			if(rb.velocity.y<-150)
 			{
 				rb.velocity=new Vector3(rb.velocity.x,-150,rb.velocity.z);
 			}
-			//print(rb.position.y);
+			// straighten everything up, stop us going backwards, stop bad things happening generally 
+			// stop backwards
+			if(rb.velocity.z<0)
+			{
+				rb.AddForce (new Vector3(0,0,0.1f));
+//				rb.velocity=new Vector3(rb.velocity.x,rb.velocity.y,0);
+			}
+			// stop sideways
+			if(rb.velocity.x!=0)
+			{
+				rb.velocity=new Vector3(rb.velocity.x*0.95f,rb.velocity.y,rb.velocity.z);
+			}
+			// make angle straighten out
+			rb.rotation=Quaternion.Slerp (rb.rotation,Quaternion.Euler (0,0,0),0.01f);
+			// stop on level 0 (intro) if we crash
 			if(sc.getLevel()==0 && rb.position.y<-40)
 			{
 				rb.velocity=new Vector3(0,rb.velocity.y,0);
 				rb.angularVelocity=new Vector3(0,0,0);
 				rb.rotation=Quaternion.Euler(0,0,0);
 			}
-			//print(rb.velocity.y);
 
 			if(throttle > 0){
 				timeouttime = Time.time;

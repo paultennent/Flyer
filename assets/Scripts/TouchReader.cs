@@ -48,6 +48,10 @@ public class TouchReader : MonoBehaviour
 	[HideInInspector]
 	public int
 		connectionStdev;
+
+	[HideInInspector]
+	public bool receivedReading=false;
+
 	[HideInInspector]
 	public int
 		connectionVariance;
@@ -190,6 +194,7 @@ public class TouchReader : MonoBehaviour
 
 	private void HandleLine(String line)
 	{
+		receivedReading = true;
 //		print(line);
 		string[] values = line.Split (' ');
 		if (values.Length == 5) {

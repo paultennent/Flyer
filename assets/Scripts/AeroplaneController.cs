@@ -68,26 +68,37 @@ using UnityEngine;
             AirBrakes = airBrakes;
 
 		//print ("roll:" + rollInput + " pitch:" + pitchInput + " yaw:" + yawInput + " throttle:" + throttleInput);
-
+//		print ("1:" + m_Rigidbody.velocity);
             ClampInputs();
+//		print ("2:" + m_Rigidbody.velocity);
 
             CalculateRollAndPitchAngles();
+//		print ("3:" + m_Rigidbody.velocity);
 
             AutoLevel();
+//		print ("4:" + m_Rigidbody.velocity);
 
             CalculateForwardSpeed();
+//		print ("5:" + m_Rigidbody.velocity);
 
             ControlThrottle();
+//		print ("6:" + m_Rigidbody.velocity);
 
             CalculateDrag();
+//		print ("7:" + m_Rigidbody.velocity);
 
             CalculateAerodynamicEffect();
+//		print ("8:" + m_Rigidbody.velocity);
 
             CalculateLinearForces();
+//		print ("9:" + m_Rigidbody.velocity);
 
             CalculateTorque();
+//		print ("10:" + m_Rigidbody.velocity);
 
             CalculateAltitude();
+		//print ("11:" + m_Rigidbody.velocity);
+
         }
 
 
@@ -147,7 +158,7 @@ using UnityEngine;
             // Forward speed is the speed in the planes's forward direction (not the same as its velocity, eg if falling in a stall)
             var localVelocity = transform.InverseTransformDirection(m_Rigidbody.velocity);
             ForwardSpeed = Mathf.Max(0, localVelocity.z);
-        }
+	}
 
 
         private void ControlThrottle()
@@ -182,7 +193,7 @@ using UnityEngine;
             // "Aerodynamic" calculations. This is a very simple approximation of the effect that a plane
             // will naturally try to align itself in the direction that it's facing when moving at speed.
             // Without this, the plane would behave a bit like the asteroids spaceship!
-            if (m_Rigidbody.velocity.magnitude > 0)
+/*            if (m_Rigidbody.velocity.magnitude > 0)
             {
                 // compare the direction we're pointing with the direction we're moving:
                 m_AeroFactor = Vector3.Dot(transform.forward, m_Rigidbody.velocity.normalized);
@@ -199,7 +210,7 @@ using UnityEngine;
                 m_Rigidbody.rotation = Quaternion.Slerp(m_Rigidbody.rotation,
                                                       Quaternion.LookRotation(m_Rigidbody.velocity, transform.up),
                                                       m_AerodynamicEffect*Time.deltaTime);
-            }
+            }*/
         }
 
 

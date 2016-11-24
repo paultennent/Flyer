@@ -28,6 +28,9 @@ public class ScoreController : MonoBehaviour {
 
 	private string DEFAULT_NAME = "Paul";
 
+
+	private float lastScoreTime = 0;
+
 	private double lastLevelChangeTime = 0;
 	private double levelChangeInterval = 25.0;
 
@@ -49,6 +52,14 @@ public class ScoreController : MonoBehaviour {
 		generator = GameObject.Find ("Terrain Generator").GetComponent<TerrainGenerator>();
 		startGame ();
 		System.Diagnostics.Process.Start ("C:\\Dropbox\\Airship\\startobs.ahk");
+	}
+
+	public bool showScoreTimeout()
+	{
+		if (gameRunning && Time.time - lastScoreTime > 5.0) {
+			return true;
+		}
+		return false;
 	}
 
 	public void balloonHit ()
@@ -83,6 +94,7 @@ public class ScoreController : MonoBehaviour {
 		detailScale = 0.004f;
 		heightScale = 0f;
 		lastLevelChangeTime = Time.time-2;
+		lastScoreTime = Time.time;
 		GameObject.Find ("GameOver").GetComponent<Text> ().color = Color.clear;
 		GameObject.Find ("TryAgain").GetComponent<Text> ().color = Color.clear;
 		GameObject.Find ("TooHigh").GetComponent<Text> ().color = Color.clear;
@@ -125,6 +137,8 @@ public class ScoreController : MonoBehaviour {
 				val = level * 10 - (distanceToGround - scoring_leeway);
 				if (val < 0) {
 					val = 0;
+				}else{
+					lastScoreTime=Time.time;
 				}
 			}
 
@@ -144,6 +158,7 @@ public class ScoreController : MonoBehaviour {
 			}
 
 			if (level == 0) {
+				lastScoreTime = Time.time;
 				if (!hideTouch) {
 
 					int tutorialPosition = (int)((Time.time - lastLevelChangeTime) / 3f);
