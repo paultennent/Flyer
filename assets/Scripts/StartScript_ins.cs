@@ -11,6 +11,7 @@ public class StartScript_ins : MonoBehaviour {
 	void Start () {
 		countdownStartTime = Time.time;
 		GameObject.Find ("Inst").GetComponent<Text> ().color = Color.clear;
+		GameObject.Find ("Inst2").GetComponent<Text> ().color = Color.clear;
 		TouchReader tr = TouchReader.GetReader ();
 		if (tr != null) {
 			tr.clearClapSensing ();
@@ -21,6 +22,7 @@ public class StartScript_ins : MonoBehaviour {
 	void Update () {
 		if(Time.time > countdownStartTime + delay){
 			GameObject.Find ("Inst").GetComponent<Text> ().color = Color.white;
+			GameObject.Find ("Inst2").GetComponent<Text> ().color = Color.white;
 			TouchReader tr = TouchReader.GetReader ();
 			if (tr != null) {
 				if(tr.clapSensed){
