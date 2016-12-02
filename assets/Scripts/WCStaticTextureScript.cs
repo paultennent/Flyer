@@ -35,6 +35,7 @@ public class WCStaticTextureScript : MonoBehaviour {
 				driverToUse = i;
 			}
 		}
+        print (devices [driverToUse].name);
 		m_Cam = new WebCamTexture ();
 		m_Cam.deviceName = devices [driverToUse].name;
 	}

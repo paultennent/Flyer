@@ -13,7 +13,7 @@ public class Photobooth : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		Renderer renderer = GetComponent<Renderer>();
-		renderer.enabled = false;
+        renderer.enabled = false;
 	}
 
 	public void showPhotoBooth(int theScore)

@@ -120,8 +120,9 @@ public class InputController : MonoBehaviour {
 
 		} else {
 			GameObject.Find ("FlyLower").GetComponent<Text> ().color = Color.clear;
-
 		}
+        GameObject.Find ("Altitude").GetComponent<Text> ().text = "Height: "+(int)sc.heightFromGround();
+
 	}
 
 	void checkForTeleport(){
@@ -211,7 +212,7 @@ public class InputController : MonoBehaviour {
 			//print ("Fuel:" + f);
 			if (f > 0) {
 				if (sc.getLevel () > 0) {
-					rb.AddForce (aircraftJet.transform.up * ((float)((val * 5f) - 200f)));
+					rb.AddForce (aircraftJet.transform.up * ((float)((val * 8f) - 200f)));
 				} else {
 					rb.AddForce (aircraftJet.transform.up * ((float)((val) - 50)));
 				}
@@ -245,7 +246,7 @@ public class InputController : MonoBehaviour {
 			// make angle straighten out
 			rb.rotation=Quaternion.Slerp (rb.rotation,Quaternion.Euler (0,0,0),0.01f);
 			// stop on level 0 (intro) if we crash
-			if(sc.getLevel()==0 && rb.position.y<-40)
+			if(sc.getLevel()==0 && sc.heightFromGround()<5)
 			{
 				rb.velocity=new Vector3(0,rb.velocity.y,0);
 				rb.angularVelocity=new Vector3(0,0,0);

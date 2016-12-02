@@ -1,5 +1,6 @@
 import serial
 import socket
+import time
 
 UDP_IP = "127.0.0.1"
 UDP_PORT = 11123
@@ -19,6 +20,7 @@ while True:
                 ser.write("p");
                 line = ser.readline()   # read a '\n' terminated line
                 sock.sendto(line,(UDP_IP,UDP_PORT))
+                time.sleep(0.01)
     except:
         print "reopen port"
     

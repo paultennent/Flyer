@@ -12,7 +12,7 @@ public class ScoreController : MonoBehaviour {
 	int health = 100;
 	double fuel = 100;
 	int balloonsHit=0;
-	float scoring_leeway = 20;
+	float scoring_leeway = 30;
 	public Transform Effect;
 
 
@@ -89,6 +89,13 @@ public class ScoreController : MonoBehaviour {
 	private StreamWriter m_Logfile;
 	float m_LogTime;
 
+    float m_DistanceToGround=0;
+    
+    public float heightFromGround()
+    {
+        return m_DistanceToGround;
+    }
+    
 	public void startGame(){
 		balloonsHit = 0;
 		detailScale = 0.004f;
@@ -119,22 +126,20 @@ public class ScoreController : MonoBehaviour {
 
 
 			RaycastHit hit;
-			float distanceToGround = 0;
 		
 			int layerMask=1<<10;
 			if(Physics.Raycast(GameObject.Find ("AircraftJet").transform.position,Vector3.down,out hit,Mathf.Infinity,layerMask))
 			{
-				distanceToGround = hit.distance;
-//				print (distanceToGround);
+				m_DistanceToGround = hit.distance;
 			}else
 			{
-				distanceToGround = GameObject.Find ("AircraftJet").transform.position.y + 50f;
+				m_DistanceToGround = GameObject.Find ("AircraftJet").transform.position.y + 50f;
 			}
 
 
 			double val = 0;
-			if (distanceToGround > 0) {
-				val = level * 10 - (distanceToGround - scoring_leeway);
+			if (m_DistanceToGround > 0) {
+				val = level * 10 - (m_DistanceToGround - scoring_leeway);
 				if (val < 0) {
 					val = 0;
 				}else{
@@ -176,7 +181,7 @@ public class ScoreController : MonoBehaviour {
 					if (tutorialPosition < tutorialTexts.Length) {
 						showString = tutorialTexts [tutorialPosition];
 					}
-					if (distanceToGround < 1) {
+					if (m_DistanceToGround < 1) {
 						lastLevelChangeTime += Time.deltaTime;
 						showString = "Touch each other to fly";
 						//					lastLevelChangeTime=Time.time;
@@ -253,6 +258,7 @@ public class ScoreController : MonoBehaviour {
 		GameObject.Find ("Health").GetComponent<Text> ().color = Color.clear;
 		GameObject.Find ("Level").GetComponent<Text> ().color = Color.clear;
 		GameObject.Find ("Fuel").GetComponent<Text> ().color = Color.clear;
+		GameObject.Find ("Altitude").GetComponent<Text> ().color = Color.clear;
 
 
 		GameObject.Find ("Controller").GetComponent<CollectableGenerator> ().setDisabled ();

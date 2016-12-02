@@ -82,6 +82,7 @@ public class WarningCamera : MonoBehaviour {
 			GameObject.Find ("Name").GetComponent<Text> ().color = Color.clear;
 			GameObject.Find ("Title").GetComponent<Text> ().color = Color.clear;
 			GameObject.Find ("Inst").GetComponent<Text> ().color = Color.clear;
+			GameObject.Find ("Inst2").GetComponent<Text> ().color = Color.clear;
 			float scale=Screen.height / 1080f;
 
 			GUIStyle gs = new GUIStyle();

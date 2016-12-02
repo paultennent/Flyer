@@ -129,16 +129,28 @@ public class TouchReader : MonoBehaviour
 
 	const int LISTEN_PORT = 11123;
 
-	UdpClient udpReceiver=null;
+    public Socket udpReceiver;    
+    
 	IAsyncResult receiveResult=null;
-	IPEndPoint endpoint = new IPEndPoint(IPAddress.Any, LISTEN_PORT);
+	EndPoint remoteIpEndPoint = new IPEndPoint(IPAddress.Any, LISTEN_PORT);
+    byte[] receiveBytes=new byte[128];
 
 	private void UpdateUdp()
 	{
 		if (udpReceiver == null) {
-			udpReceiver = new UdpClient (LISTEN_PORT);
+			udpReceiver = new Socket (AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
+			udpReceiver.Bind (new IPEndPoint (IPAddress.Any, LISTEN_PORT));
 		}
-		if (receiveResult == null) {
+        while(udpReceiver.Available>2)
+        {
+            int len=udpReceiver.ReceiveFrom(receiveBytes,ref remoteIpEndPoint);
+            string receiveString = Encoding.ASCII.GetString(receiveBytes);
+            if(receiveString!=null)
+            {
+                HandleLine(receiveString);
+            }
+        }
+/*		if (receiveResult == null) {
 			receiveResult = udpReceiver.BeginReceive (null, null);
 		} 
 		if(receiveResult!=null && receiveResult.IsCompleted)
@@ -150,7 +162,7 @@ public class TouchReader : MonoBehaviour
 			{
 				HandleLine(receiveString);
 			}
-		}
+		}*/
 
 	}
 
@@ -195,14 +207,19 @@ public class TouchReader : MonoBehaviour
 	private void HandleLine(String line)
 	{
 		receivedReading = true;
-//		print(line);
 		string[] values = line.Split (' ');
 		if (values.Length == 5) {
-			leftCapacitive = int.Parse (values [0]);
-			rightCapacitive = int.Parse (values [1]);
-			connectionMean = int.Parse (values [2]);
-			connectionVariance = int.Parse (values [3]);
-			connectionStdev = int.Parse (values [4]);
+            try
+            {
+                leftCapacitive = int.Parse (values [0]);
+                rightCapacitive = int.Parse (values [1]);
+                connectionMean = int.Parse (values [2]);
+                connectionVariance = int.Parse (values [3]);
+                connectionStdev = int.Parse (values [4]);
+            }catch(FormatException e)
+            {
+                print(line);
+            }
 			if (m_Logfile != null) {
 				m_Logfile.WriteLine ((Time.time - m_LogTime) + "," + leftCapacitive + "," + rightCapacitive + "," + connectionStdev);
 			}

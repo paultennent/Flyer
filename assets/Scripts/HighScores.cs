@@ -63,6 +63,13 @@ public class HighScores : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		if (counting) {
+            
+            TouchReader tr = TouchReader.GetReader();
+            if(tr!=null && tr.clapSensed)
+            {
+                endingScene=true;
+            }
+
 
 			if(Time.time > countTimerStart + backToIntroDelay){
 				endingScene = true;
