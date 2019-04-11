@@ -28,8 +28,10 @@ public class Headlights : MonoBehaviour
 		} 
 	}
 
+    private bool inGame=false;
+    
     private float timeSinceLast=0f;
-    private bool cycleLights=true;
+    private bool cycleLights=false;
     private float lastLevel=0;
     private float thisLevel=0;
 	private string port_name="COM4";
@@ -72,19 +74,49 @@ public class Headlights : MonoBehaviour
         if(timeSinceLast>0.1f)
         {
             timeSinceLast=0f;
-            byte[] vals={(byte)lastLevel};
-            comport.Write(vals,0,1);
-            print(lastLevel+":"+thisLevel);
+            if(inGame)
+            {
+                byte[] vals={(byte)'p',(byte)lastLevel,(byte)'\n'};
+                comport.Write(vals,0,3);
+                //print(lastLevel+":"+thisLevel);
+            }
         }        
     }
-    
+
+    public void SetHighscore()
+    {
+        byte[] vals={(byte)'h',(byte)0,(byte)'\n'};
+        comport.Write(vals,0,3);
+        inGame=false;
+        print("SCORE");
+    }
+
+    public void SetDead()
+    {
+        byte[] vals={(byte)'d',(byte)0,(byte)'\n'};
+        comport.Write(vals,0,3);
+        inGame=false;
+        print("DEAD");
+    }
+
+    public void SetIntro(int val)
+    {
+        byte[] vals={(byte)'t',(byte)val,(byte)'\n'};
+        comport.Write(vals,0,3);
+        inGame=false;
+        print("INTRO:"+val);
+    }
+
     public void SetLights(int level)
     {
         if(level<0 || level>255)
         {
-            cycleLights=true;
+            inGame=false;
+//            cycleLights=true;
+            SetIntro(0);
         }else
         {
+            inGame=true;
             cycleLights=false;
             thisLevel=level;
         }

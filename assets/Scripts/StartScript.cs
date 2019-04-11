@@ -35,8 +35,6 @@ public class StartScript : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		if (!endingScene) {
-            Headlights hl=Headlights.GetHeadlights();
-            hl.SetLights(-1);
 
 			if (!warningScreenActive) {
 				GameObject.Find ("PaulCharacter 1").GetComponent<ThirdPersonCharacter> ().Move (new Vector3 (0, 0, 0), !(input1Active && input2Active), false);
@@ -57,6 +55,9 @@ public class StartScript : MonoBehaviour {
 				GameObject.Find ("Prop_01").GetComponent<RotatePropIntro> ().engage (input2Active);
 				GameObject.Find ("Prop_02").GetComponent<RotatePropIntro> ().engage (input2Active);
 
+                input1Active = false;
+                input2Active = false;
+
 
 				TouchReader tr = TouchReader.GetReader ();
 				if (tr != null) {
@@ -71,19 +72,15 @@ public class StartScript : MonoBehaviour {
                         input2Active = true;
                         GameObject.Find ("Controller").GetComponent<SceneFadeInOut>().EndScene("airship");
 					}
-				} else {
-					if (Input.GetKey (KeyCode.T)) {
-						input1Active = true;
-					} else {
-						input1Active = false;
-					}
-					
-					if (Input.GetKey (KeyCode.G)) {
-						input2Active = true;
-					} else {
-						input2Active = false;
-					}
-				}
+				} 
+                if (Input.GetKey (KeyCode.T)) {
+                    input1Active = true;
+                } 
+                if (Input.GetKey (KeyCode.G)) {
+                    input2Active = true;
+                } 
+                Headlights hl=Headlights.GetHeadlights();
+                hl.SetIntro((input1Active ?1:0)+(input2Active?2:0));
 
 				//allow keypress effect
 				if (Input.GetKeyDown ("down")) {

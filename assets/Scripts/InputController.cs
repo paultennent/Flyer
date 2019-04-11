@@ -176,8 +176,9 @@ public class InputController : MonoBehaviour {
 			keyPitch=Mathf.Clamp(keyPitch,-1,1);
 		}
         
-        if(tm!=null)
+        if(tm!=null && running)
         {
+            
             Headlights hl=tm.GetComponent<Headlights>();
 //            print((pitch+1.0f)*127.0f);
             hl.SetLights((int)Mathf.Clamp((pitch+1.0f)*127.0f,0f,255f));

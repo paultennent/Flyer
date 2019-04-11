@@ -20,6 +20,8 @@ public class Photobooth : MonoBehaviour {
 	{
 		score = theScore;
 		if (GameObject.Find ("Controller").GetComponent<HighScores> ().lowScore () <= theScore) {
+            Headlights hl=Headlights.GetHeadlights();
+            hl.SetHighscore();
 			GameObject.Find ("PlayerDeathEffect").GetComponent<Renderer> ().enabled = false;
 			m_Showing = true;
 			WCStaticTextureScript wc = WCStaticTextureScript.GetWC ();
@@ -33,6 +35,8 @@ public class Photobooth : MonoBehaviour {
 				tr.clearClapSensing ();
 			}
 		} else {
+            Headlights hl=Headlights.GetHeadlights();
+            hl.SetDead();
 			GameObject.Find ("Controller").GetComponent<NewGameController> ().setEnabled (true);
 			GameObject.Find ("Controller").GetComponent<HighScores> ().showHighScores ();
 			GameObject.Find ("Controller").GetComponent<HighScores> ().startCountdown ();
@@ -41,6 +45,8 @@ public class Photobooth : MonoBehaviour {
 
 	public void hidePhotoBooth()
 	{
+        Headlights hl=Headlights.GetHeadlights();
+        hl.SetDead();
 		m_Showing = false;
 		m_Cam.Stop ();
 		Renderer renderer = GetComponent<Renderer>();
@@ -66,9 +72,9 @@ public class Photobooth : MonoBehaviour {
 				}
 			}
 			if (Input.GetKeyDown ("up")) {
+				hidePhotoBooth ();
 				string name=writeSnapshot ();
 				GameObject.Find ("Controller").GetComponent<HighScores> ().addScore ((int)score, name);
-				hidePhotoBooth ();
 			}
 			if(Input.GetKeyDown ("x"))
 			{
