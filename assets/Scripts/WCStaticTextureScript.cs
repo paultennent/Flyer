@@ -30,8 +30,8 @@ public class WCStaticTextureScript : MonoBehaviour {
 		WebCamDevice[] devices = WebCamTexture.devices;
 		int driverToUse = 0;
 		for (var i = 0; i < devices.Length; i++) {
-			if (devices[i].name == "SplitCam Video Driver"){
-				print ("Found splitcam driver");
+			if (devices[i].name != "SplitCam Video Driver"){
+				print ("Found non splitcam driver");
 				driverToUse = i;
 			}
 		}

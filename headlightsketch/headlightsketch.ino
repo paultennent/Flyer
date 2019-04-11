@@ -59,10 +59,10 @@ void loop() {
         b=0;        
       }else
       {
-        int fadeAmount=(nextFadePos-fadePos);
-        r=(targetR*fadeAmount);
-        g=(targetG*fadeAmount);
-        b=(targetB*fadeAmount);
+        int fadeAmount=(fadePos-curFadePos);
+        r=(targetR*fadeAmount)>>7;
+        g=(targetG*fadeAmount)>>7;
+        b=(targetB*fadeAmount)>>7;
       }
       if(i==0)
       {

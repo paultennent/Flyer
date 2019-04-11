@@ -35,6 +35,9 @@ public class StartScript : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		if (!endingScene) {
+            Headlights hl=Headlights.GetHeadlights();
+            hl.SetLights(-1);
+
 			if (!warningScreenActive) {
 				GameObject.Find ("PaulCharacter 1").GetComponent<ThirdPersonCharacter> ().Move (new Vector3 (0, 0, 0), !(input1Active && input2Active), false);
 				if (input1Active && input2Active) {
@@ -60,9 +63,13 @@ public class StartScript : MonoBehaviour {
 					input1Active = tr.leftCapacitive > 100;
 					input2Active = tr.rightCapacitive > 100;
 					if (tr.clapSensed) {
-						//endingScene = true;
-						warningScreenActive = true;
-						GameObject.Find ("PhotoPlane").GetComponent<WarningCamera> ().showPhotoBooth ();
+						endingScene = true;
+//						warningScreenActive = true;
+//						GameObject.Find ("PhotoPlane").GetComponent<WarningCamera> ().showPhotoBooth ();
+                        //skip warning screen
+                        input1Active = true;
+                        input2Active = true;
+                        GameObject.Find ("Controller").GetComponent<SceneFadeInOut>().EndScene("airship");
 					}
 				} else {
 					if (Input.GetKey (KeyCode.T)) {
@@ -80,8 +87,10 @@ public class StartScript : MonoBehaviour {
 
 				//allow keypress effect
 				if (Input.GetKeyDown ("down")) {
-					warningScreenActive = true;
-					GameObject.Find ("PhotoPlane").GetComponent<WarningCamera> ().showPhotoBooth ();
+					endingScene=true;
+                    //warningScreenActive = true;
+					//GameObject.Find ("PhotoPlane").GetComponent<WarningCamera> ().showPhotoBooth ();
+                    GameObject.Find ("Controller").GetComponent<SceneFadeInOut>().EndScene("airship");
 				}
 
 				if (input1Active) {

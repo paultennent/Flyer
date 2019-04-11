@@ -166,7 +166,8 @@ public class InputController : MonoBehaviour {
 		if (!keyOverride) {
 			if (tm != null) {
 				TouchReader tr = tm.GetComponent<TouchReader> ();
-				pitch = tr.connectionStdev / 256.0f - 1.0f;
+				pitch = tr.connectionStdev / 256.0f - 1.0f;                
+                
 			} 
 		} else {
 			pitch=keyPitch;
@@ -174,6 +175,13 @@ public class InputController : MonoBehaviour {
 //			keyPitch-=Time.deltaTime*3f;
 			keyPitch=Mathf.Clamp(keyPitch,-1,1);
 		}
+        
+        if(tm!=null)
+        {
+            Headlights hl=tm.GetComponent<Headlights>();
+//            print((pitch+1.0f)*127.0f);
+            hl.SetLights((int)Mathf.Clamp((pitch+1.0f)*127.0f,0f,255f));
+        }
 
 		ScoreController sc=aircraftJet.GetComponent<ScoreController>();
 

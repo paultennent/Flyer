@@ -1,3 +1,5 @@
+// Upgrade NOTE: replaced 'mul(UNITY_MATRIX_MVP,*)' with 'UnityObjectToClipPos(*)'
+
 // Upgrade NOTE: replaced '_Object2World' with 'unity_ObjectToWorld'
 
 Shader "Explosion" {
@@ -31,7 +33,7 @@ Shader "Explosion" {
 			
 			v2f vert (appdata_base v) {
 				v2f o;
-				o.vertex = mul(UNITY_MATRIX_MVP, v.vertex - float4(v.normal * .25, 0));
+				o.vertex = UnityObjectToClipPos(v.vertex - float4(v.normal * .25, 0));
 				return o;
 			}
 			
@@ -90,7 +92,7 @@ Shader "Explosion" {
 			
 			v2f vert (appdata_base v) {
 				v2f o;
-				o.vertex = mul(UNITY_MATRIX_MVP, v.vertex);
+				o.vertex = UnityObjectToClipPos(v.vertex);
 				o.worldPos = mul(unity_ObjectToWorld, v.vertex).xyz;
 				o.viewVec = WorldSpaceViewDir(v.vertex);
 				o.sphere.xyz = mul(unity_ObjectToWorld, float4(0, 0, 0, 1)).xyz;
