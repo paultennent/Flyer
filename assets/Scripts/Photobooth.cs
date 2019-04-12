@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System;
+using System.IO;
 
 public class Photobooth : MonoBehaviour {
 
@@ -19,7 +20,7 @@ public class Photobooth : MonoBehaviour {
 	public void showPhotoBooth(int theScore)
 	{
 		score = theScore;
-		if (GameObject.Find ("Controller").GetComponent<HighScores> ().lowScore () <= theScore) {
+		if (GameObject.Find ("Controller").GetComponent<HighScores> ().lowScore () < theScore) {
             Headlights hl=Headlights.GetHeadlights();
             hl.SetHighscore();
 			GameObject.Find ("PlayerDeathEffect").GetComponent<Renderer> ().enabled = false;
@@ -67,14 +68,14 @@ public class Photobooth : MonoBehaviour {
 					// take the picture
 					string name=writeSnapshot ();
 					GameObject.Find ("Controller").GetComponent<HighScores> ().addScore ((int)score, name);
-					tr.clearClapSensing ();
 					hidePhotoBooth ();
+					tr.clearClapSensing ();
 				}
 			}
 			if (Input.GetKeyDown ("up")) {
-				hidePhotoBooth ();
 				string name=writeSnapshot ();
 				GameObject.Find ("Controller").GetComponent<HighScores> ().addScore ((int)score, name);
+				hidePhotoBooth ();
 			}
 			if(Input.GetKeyDown ("x"))
 			{
@@ -102,8 +103,14 @@ public class Photobooth : MonoBehaviour {
 		snap.SetPixels(m_Cam.GetPixels());
 		snap.Apply();
 		string filename = "C:\\Dropbox\\Airship\\airshipimages\\" + DateTime.Now.ToString ("yyyyMMddHHmmss") + ".png";
-		System.IO.File.WriteAllBytes(filename, snap.EncodeToPNG());
-		return filename;
+        try
+        {
+            System.IO.File.WriteAllBytes(filename, snap.EncodeToPNG());
+            return filename;
+        }catch(IOException e)
+        {
+            return "";
+        }
 	}
 
 

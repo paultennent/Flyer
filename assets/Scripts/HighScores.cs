@@ -55,7 +55,7 @@ public class HighScores : MonoBehaviour {
 	}
 
 	public void showHighScores(){
-		System.Diagnostics.Process.Start ("C:\\Dropbox\\Airship\\stopobs.ahk");
+		//System.Diagnostics.Process.Start ("C:\\Dropbox\\Airship\\stopobs.ahk");
 		//GameObject.Find ("HighScores").GetComponent<Text> ().text = getHighScoreText();
 		loadTextures ();
 		showscores = true;
@@ -99,8 +99,8 @@ public class HighScores : MonoBehaviour {
 			for (int i=0; i<names.Length; i++) {
 				if (pics[i] != null) {
 					GUI.DrawTexture (new Rect (837*scale, (150 + (i * 80))*scale, 128*scale, 72*scale), pics[i], ScaleMode.ScaleToFit, true);
-					GUI.Label (new Rect (987*scale, (150 + (i * 80))*scale, 300*scale, 72*scale), scores [i].ToString (),gs);
 				}
+                GUI.Label (new Rect (987*scale, (150 + (i * 80))*scale, 300*scale, 72*scale), scores [i].ToString (),gs);
 			}
 		}
 	}

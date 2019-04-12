@@ -34,7 +34,7 @@ public class Headlights : MonoBehaviour
     private bool cycleLights=false;
     private float lastLevel=0;
     private float thisLevel=0;
-	private string port_name="COM4";
+	private string port_name="COM6";
 	private SerialPort comport = null;
     private bool portOpen=false;
     private int test_level=0;
@@ -42,14 +42,6 @@ public class Headlights : MonoBehaviour
     void Update ()
     {
         timeSinceLast+=Time.deltaTime;
-        if(!portOpen)
-        {
-            comport = new SerialPort ("\\\\.\\" + port_name, 9600, Parity.None, 8, StopBits.One);
-            comport.ReadTimeout = 10;
-            comport.Open();
-            SetLights(-1);
-            portOpen=true;
-        }
         if(cycleLights)
         {
             test_counter+=Time.deltaTime*100f;
@@ -77,34 +69,55 @@ public class Headlights : MonoBehaviour
             if(inGame)
             {
                 byte[] vals={(byte)'p',(byte)lastLevel,(byte)'\n'};
-                comport.Write(vals,0,3);
+                TryWrite(vals);
                 //print(lastLevel+":"+thisLevel);
             }
         }        
+    }
+    
+    public void TryWrite(byte[]vals)
+    {
+        try
+        {
+            if(!portOpen)
+            {
+                comport = new SerialPort ("\\\\.\\" + port_name, 9600, Parity.None, 8, StopBits.One);
+                comport.ReadTimeout = 10;
+                comport.Open();
+                SetLights(-1);
+                portOpen=true;
+            }
+            if(comport!=null)
+            {
+                comport.Write(vals,0,vals.Length);
+            }
+        }catch(IOException e)
+        {
+        }
     }
 
     public void SetHighscore()
     {
         byte[] vals={(byte)'h',(byte)0,(byte)'\n'};
-        comport.Write(vals,0,3);
+        TryWrite(vals);
         inGame=false;
-        print("SCORE");
+        //print("SCORE");
     }
 
     public void SetDead()
     {
         byte[] vals={(byte)'d',(byte)0,(byte)'\n'};
-        comport.Write(vals,0,3);
+        TryWrite(vals);
         inGame=false;
-        print("DEAD");
+        //print("DEAD");
     }
 
     public void SetIntro(int val)
     {
         byte[] vals={(byte)'t',(byte)val,(byte)'\n'};
-        comport.Write(vals,0,3);
+        TryWrite(vals);
         inGame=false;
-        print("INTRO:"+val);
+        //print("INTRO:"+val);
     }
 
     public void SetLights(int level)

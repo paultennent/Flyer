@@ -51,7 +51,7 @@ public class ScoreController : MonoBehaviour {
 		Cursor.visible = false;
 		generator = GameObject.Find ("Terrain Generator").GetComponent<TerrainGenerator>();
 		startGame ();
-		System.Diagnostics.Process.Start ("C:\\Dropbox\\Airship\\startobs.ahk");
+		//System.Diagnostics.Process.Start ("C:\\Dropbox\\Airship\\startobs.ahk");
 	}
 
 	public bool showScoreTimeout()
