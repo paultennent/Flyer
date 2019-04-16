@@ -74,7 +74,7 @@ void loop() {
   {
     holding=true;
   }
-  if(leftVal<100 && rightVal<100)
+  if((leftVal<100 && rightVal<100) || (leftVal<50 || rightVal<50))
   {
     holding=false;
   }

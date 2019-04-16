@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections;
 using System.IO.Ports;
 using System.IO;
-
+using System;
 
 public class Headlights : MonoBehaviour
 {
@@ -84,15 +84,21 @@ public class Headlights : MonoBehaviour
                 comport = new SerialPort ("\\\\.\\" + port_name, 9600, Parity.None, 8, StopBits.One);
                 comport.ReadTimeout = 10;
                 comport.Open();
-                SetLights(-1);
                 portOpen=true;
             }
-            if(comport!=null)
+            if(comport!=null && portOpen)
             {
                 comport.Write(vals,0,vals.Length);
             }
         }catch(IOException e)
         {
+            portOpen=false;
+            print("Failed to open "+port_name);
+            print(e);
+        }catch(InvalidOperationException e)
+        {
+            print("Couldn't write to Headlight COMPORT");
+            portOpen=false;
         }
     }
 

@@ -75,6 +75,7 @@ void showPower(int val)
     }
   }
   strip.show() ;  
+  strip.show() ;  
 }
 
 int rLeft=128;
@@ -168,7 +169,6 @@ void showDeadAnimation(int val)
     strip.show();
     delay(5);
     maxVal-=1;
-    Serial.println(".");
   }
   showIntroAnimation(0);
 }
@@ -210,11 +210,6 @@ void loop() {
     int data=Serial.read();
     if(data=='\n')
     {
-//      Serial.print(val);
-//      Serial.print(":");
-//      Serial.print(cmd);
-//      Serial.println("");
-      // run command
       switch(cmd)
       {
         case 't': // title screen animation

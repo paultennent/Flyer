@@ -85,6 +85,7 @@ public class StartScript : MonoBehaviour {
 				//allow keypress effect
 				if (Input.GetKeyDown ("down")) {
 					endingScene=true;
+                    
                     //warningScreenActive = true;
 					//GameObject.Find ("PhotoPlane").GetComponent<WarningCamera> ().showPhotoBooth ();
                     GameObject.Find ("Controller").GetComponent<SceneFadeInOut>().EndScene("airship");
