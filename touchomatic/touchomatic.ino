@@ -154,11 +154,19 @@ void loop() {
   {
     if(shouldDisplay())
     {
-          Serial.print(int(leftVal));
-          Serial.print(" ");
-          Serial.print(int(rightVal));
-          Serial.println(" 0 0 0");
+      float mean=0;
+      float var=0;
+      Serial.print(int(leftVal));
+      Serial.print(" ");
+      Serial.print(int(rightVal));
+      Serial.print(" ");
+      Serial.print(int(mean));
+      Serial.print(" ");
+      Serial.print(long(var));
+      Serial.print(" ");
+      Serial.println(int(sqrt(var)));
     }
+    delay(10);
   }
   
 }

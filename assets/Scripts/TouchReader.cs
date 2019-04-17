@@ -144,7 +144,7 @@ public class TouchReader : MonoBehaviour
         while(udpReceiver.Available>2)
         {
             int len=udpReceiver.ReceiveFrom(receiveBytes,ref remoteIpEndPoint);
-            string receiveString = Encoding.ASCII.GetString(receiveBytes);
+            string receiveString = Encoding.ASCII.GetString(receiveBytes,0,len);
             if(receiveString!=null)
             {
                 HandleLine(receiveString);
@@ -188,9 +188,10 @@ public class TouchReader : MonoBehaviour
 					if (line != null) {
 						try {
 							HandleLine(line);
-								
+                            
+								//print(line+":");
 							} catch {
-								//print("Error getting data:" + values);
+								print("Error getting data:" + line);
 							}
 						}
 
@@ -218,8 +219,14 @@ public class TouchReader : MonoBehaviour
                 connectionStdev = int.Parse (values [4]);
             }catch(FormatException e)
             {
-                print(line);
+                for(int c=0;c<values.Length;c++)
+                {
+                    print("Value:"+c+":"+values[c]);
+                }
+                print("Bad line["+line+"]");
+                return;
             }
+            //print("line:"+line+":"+connectionStdev);
 			if (m_Logfile != null) {
 				m_Logfile.WriteLine ((Time.time - m_LogTime) + "," + leftCapacitive + "," + rightCapacitive + "," + connectionStdev);
 			}

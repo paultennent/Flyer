@@ -79,26 +79,25 @@ public class Headlights : MonoBehaviour
     {
         try
         {
-            if(!portOpen)
+            if(comport==null)
             {
                 comport = new SerialPort ("\\\\.\\" + port_name, 9600, Parity.None, 8, StopBits.One);
                 comport.ReadTimeout = 10;
                 comport.Open();
-                portOpen=true;
             }
-            if(comport!=null && portOpen)
+            if(comport!=null)
             {
                 comport.Write(vals,0,vals.Length);
             }
         }catch(IOException e)
         {
-            portOpen=false;
             print("Failed to open "+port_name);
             print(e);
+            comport=null;
         }catch(InvalidOperationException e)
         {
             print("Couldn't write to Headlight COMPORT");
-            portOpen=false;
+            comport=null;
         }
     }
 
